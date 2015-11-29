@@ -1,5 +1,10 @@
 .DS_Store
 
 .git/
+.gitignore
 
 Makefile
+
+pkg
+
+*.tar.gz
