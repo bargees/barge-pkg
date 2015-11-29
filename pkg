@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+BUILDER=ailispaw/docker-root-pkg:buildroot-2015.08.1
+
+usage() {
+  echo "Usage: $(basename $0) <build|install> <package-name>" >&2
+  exit 1
+}
+
+build() {
+  local TMP_DIR=/tmp/${PKG_NAME}
+  local TARGET_DIR=/build/buildroot/output/target
+
+  sudo rm -rf ${TMP_DIR}
+  mkdir -p ${TMP_DIR}
+  trap "sudo rm -rf ${TMP_DIR}" EXIT
+
+  docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${BUILDER} make --quiet ${PACKAGE}
+
+  tar -zc -f ${PKG_FILE} -C ${TMP_DIR} .
+}
+
+install() {
+  if [ ! -f ${PKG_FILE} ]; then
+    build
+  fi
+
+  sudo tar -zxv -f ${PKG_FILE} -C /
+}
+
+COMMAND=$1
+PACKAGE=$2
+if [ -z "${PACKAGE}" ]; then
+  usage
+fi
+
+PKG_NAME=docker-root-pkg-${PACKAGE}
+PKG_FILE=${PKG_NAME}.tar.gz
+
+case "${COMMAND}" in
+  build)
+    build
+    ;;
+  install)
+    install
+    ;;
+  *)
+    usage
+esac
