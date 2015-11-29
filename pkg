@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
 
-BUILDER=ailispaw/docker-root-pkg:buildroot-2015.08.1
+source /etc/os-release
+
+BUILDER=ailispaw/docker-root-pkg:${VERSION}
 
 usage() {
   echo "Usage: $(basename $0) <build|install> <package-name>" >&2
