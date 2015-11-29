@@ -15,8 +15,11 @@ build() {
   local TARGET_DIR=/build/buildroot/output/target
 
   sudo rm -rf ${TMP_DIR}
-  mkdir -p ${TMP_DIR}
   trap "sudo rm -rf ${TMP_DIR}" EXIT
+  mkdir -p ${TMP_DIR}
+  for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do
+    sudo mkdir -p ${TMP_DIR}/$i
+  done
 
   docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${BUILDER} make --quiet ${PACKAGE}
 
