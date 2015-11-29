@@ -28,4 +28,5 @@ WORKDIR ${BUILDROOT}
 RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
     make oldconfig && \
     make --quiet && \
-    rm -rf ${BUILDROOT}/dl/*
+    rm -rf board/* configs/* dl/* && \
+    find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf
