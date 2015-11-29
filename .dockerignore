@@ -4,6 +4,7 @@
 .gitignore
 
 Makefile
+README.md
 
 pkg
 
