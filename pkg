@@ -6,7 +6,7 @@ source /etc/os-release
 BUILDER=ailispaw/docker-root-pkg:${VERSION}
 
 usage() {
-  echo "Usage: $(basename $0) <build|install> <package-name>" >&2
+  echo "Usage: $(basename $0) <build|install> <package-name> [build options]" >&2
   exit 1
 }
 
@@ -21,7 +21,7 @@ build() {
     sudo mkdir -p ${TMP_DIR}/$i
   done
 
-  docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${BUILDER} make --quiet ${PACKAGE}
+  docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${OPTIONS} ${BUILDER} make --quiet ${PACKAGE}
 
   tar -zc -f ${PKG_FILE} -C ${TMP_DIR} .
 }
@@ -35,10 +35,16 @@ install() {
 }
 
 COMMAND=$1
-PACKAGE=$2
+if [ -z "${COMMAND}" ]; then
+  usage
+fi
+shift
+PACKAGE=$1
 if [ -z "${PACKAGE}" ]; then
   usage
 fi
+shift
+OPTIONS=$*
 
 PKG_NAME=docker-root-pkg-${PACKAGE}
 PKG_FILE=${PKG_NAME}.tar.gz
