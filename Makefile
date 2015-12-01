@@ -1,4 +1,4 @@
-BUILDER := docker-root-pkg
+BUILDER := ailispaw/docker-root-pkg:1.2.0
 
 SOURCES := Dockerfile .dockerignore empty.config
 
