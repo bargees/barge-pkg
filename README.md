@@ -52,6 +52,6 @@ Usage: pkg <build|install> <package-name> [build options]
 ### git
 
 ```bash
-[docker@docker-root-pkg ~]$ pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_CURL=y
+[docker@docker-root-pkg ~]$ pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 [docker@docker-root-pkg ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 ```
