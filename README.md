@@ -55,3 +55,16 @@ Usage: pkg <build|install> <package-name> [build options]
 [docker@docker-root ~]$ pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 [docker@docker-root ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 ```
+
+### perl
+
+```bash
+[docker@docker-root ~]$ pkg install perl
+```
+
+### curl
+
+```bash
+[docker@docker-root ~]$ pkg install libcurl -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_CURL=y
+[docker@docker-root ~]$ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+```
