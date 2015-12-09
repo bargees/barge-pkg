@@ -17,11 +17,11 @@ Install (and build if necessary) `docker-root-pkg-<package-name>.tar.gz` into th
 ## Install `pkg`
 
 ```bash
-[docker@docker-root-pkg ~]$ wget https://raw.githubusercontent.com/ailispaw/docker-root-pkg/master/pkg
-[docker@docker-root-pkg ~]$ chmod +x pkg
-[docker@docker-root-pkg ~]$ sudo mkdir -p /opt/bin
-[docker@docker-root-pkg ~]$ sudo mv pkg /opt/bin
-[docker@docker-root-pkg ~]$ pkg
+[docker@docker-root ~]$ wget https://raw.githubusercontent.com/ailispaw/docker-root-pkg/master/pkg
+[docker@docker-root ~]$ chmod +x pkg
+[docker@docker-root ~]$ sudo mkdir -p /opt/bin
+[docker@docker-root ~]$ sudo mv pkg /opt/bin
+[docker@docker-root ~]$ pkg
 Usage: pkg <build|install> <package-name> [build options]
 ```
 
@@ -30,7 +30,7 @@ Usage: pkg <build|install> <package-name> [build options]
 ### GNU tar
 
 ```bash
-[docker@docker-root-pkg ~]$ pkg build tar
+[docker@docker-root ~]$ pkg build tar
 >>> tar 1.28 Downloading
 >>> tar 1.28 Extracting
 >>> tar 1.28 Patching
@@ -44,14 +44,14 @@ Usage: pkg <build|install> <package-name> [build options]
 .
 .
 .
-[docker@docker-root-pkg ~]$ ls -l *.tar.gz
+[docker@docker-root ~]$ ls -l *.tar.gz
 -rw-r--r--    1 docker   docker     1073385 Nov 29 11:34 docker-root-pkg-tar.tar.gz
-[docker@docker-root-pkg ~]$ pkg install tar
+[docker@docker-root ~]$ pkg install tar
 ```
 
 ### git
 
 ```bash
-[docker@docker-root-pkg ~]$ pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
-[docker@docker-root-pkg ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
+[docker@docker-root ~]$ pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
+[docker@docker-root ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 ```
