@@ -46,7 +46,7 @@ fi
 shift
 OPTIONS=$*
 
-PKG_NAME=docker-root-pkg-${PACKAGE}
+PKG_NAME=docker-root-pkg-${PACKAGE}-v${VERSION}
 PKG_FILE=${PKG_NAME}.tar.gz
 
 case "${COMMAND}" in
