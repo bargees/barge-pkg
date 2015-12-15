@@ -8,11 +8,11 @@ pkg <build|install> <package-name> [build options]
 
 ### pkg build <package-name> [build options]
 
-Build a package and create `docker-root-pkg-<package-name>.tar.gz` file in the current directory.
+Build a package and create `docker-root-pkg-<package-name>-<version>.tar.gz` file in the current directory.
 
 ### pkg install <package-name> [build options]
 
-Install (and build if necessary) `docker-root-pkg-<package-name>.tar.gz` into the root filesystem.
+Install (and build if necessary) `docker-root-pkg-<package-name>-<version>.tar.gz` into the root filesystem.
 
 ## Install `pkg`
 
@@ -45,7 +45,7 @@ Usage: pkg <build|install> <package-name> [build options]
 .
 .
 [docker@docker-root ~]$ ls -l *.tar.gz
--rw-r--r--    1 docker   docker     1073385 Nov 29 11:34 docker-root-pkg-tar.tar.gz
+-rw-r--r--    1 docker   docker     1073694 Dec 15 09:27 docker-root-pkg-tar-v1.2.5.tar.gz
 [docker@docker-root ~]$ pkg install tar
 ```
 
