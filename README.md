@@ -68,3 +68,9 @@ Usage: pkg <build|install> <package-name> [build options]
 [docker@docker-root ~]$ pkg install libcurl -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_CURL=y
 [docker@docker-root ~]$ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ```
+
+### CRIU
+
+```bash
+[docker@docker-root ~]$ pkg install criu
+```
