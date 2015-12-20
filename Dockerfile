@@ -23,6 +23,9 @@ RUN cd ${SRCDIR} && \
 # Copy the empty config file
 COPY empty.config ${BUILDROOT}/.config
 
+# Copy extra packages
+COPY package ${BUILDROOT}/package/
+
 WORKDIR ${BUILDROOT}
 
 RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
