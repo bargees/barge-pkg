@@ -74,3 +74,9 @@ Usage: pkg <build|install> <package-name> [build options]
 ```bash
 [docker@docker-root ~]$ pkg install criu
 ```
+
+### ipvsadm
+
+```bash
+[docker@docker-root ~]$ pkg install ipvsadm -e BR2_PACKAGE_LIBNL=y
+```
