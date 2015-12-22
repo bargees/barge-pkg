@@ -1,7 +1,7 @@
 BUILDER := ailispaw/docker-root-pkg:1.2.5
 
-SOURCES := Dockerfile .dockerignore empty.config package/Config.in \
-	package/criu/Config.in package/criu/criu.mk
+SOURCES := Dockerfile .dockerignore empty.config extra/Config.in extra/external.mk \
+	extra/package/criu/Config.in extra/package/criu/criu.mk
 
 build: $(SOURCES)
 	$(eval SRC_UPDATED=$$(shell stat -f "%m" $^ | sort -gr | head -n1))

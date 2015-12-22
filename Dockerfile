@@ -24,12 +24,12 @@ RUN cd ${SRCDIR} && \
 COPY empty.config ${BUILDROOT}/.config
 
 # Copy extra packages
-COPY package ${BUILDROOT}/package/
+COPY extra ${SRCDIR}/extra/
 
 WORKDIR ${BUILDROOT}
 
 RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
-    make oldconfig && \
+    make BR2_EXTERNAL=${SRCDIR}/extra oldconfig && \
     make --quiet && \
     rm -rf board/* configs/* dl/* && \
     find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf
