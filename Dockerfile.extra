@@ -1,0 +1,6 @@
+FROM ailispaw/docker-root-pkg:base
+
+# Copy extra packages
+COPY extra ${SRCDIR}/extra/
+
+RUN make BR2_EXTERNAL=${SRCDIR}/extra oldconfig
