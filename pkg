@@ -1,37 +1,64 @@
 #!/bin/sh
-set -e
+
+if [ "$(id -u)" != "0" ]; then
+  echo "$(basename $0): Operation not permitted" >&2
+  exit 1
+fi
 
 source /etc/os-release
 
 BUILDER=ailispaw/docker-root-pkg:${VERSION}
+PKG_DIR=/opt/pkg
+PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
+
+mkdir -p ${PKG_DIR}
 
 usage() {
   echo "Usage: $(basename $0) <build|install> <package-name> [build options]" >&2
   exit 1
 }
 
+download() {
+  echo -n "Downloading..."
+
+  trap "rm -rf ${PKG_FILE}" ERR
+  wget -qO ${PKG_FILE} ${PKG_URL}/${PKG_NAME}.tar.gz
+
+  if [ -f ${PKG_FILE} ]; then
+    echo "Done."
+  else
+    echo "NG."
+  fi
+}
+
 build() {
+  echo "Building..."
+
   local TMP_DIR=/tmp/${PKG_NAME}
   local TARGET_DIR=/build/buildroot/output/target
 
-  sudo rm -rf ${TMP_DIR}
-  trap "sudo rm -rf ${TMP_DIR}" EXIT
+  set -e
+
+  rm -rf ${TMP_DIR}
+  trap "rm -rf ${TMP_DIR}" EXIT
   mkdir -p ${TMP_DIR}
   for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do
-    sudo mkdir -p ${TMP_DIR}/$i
+    mkdir -p ${TMP_DIR}/$i
   done
 
   docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${OPTIONS} ${BUILDER} make --quiet ${PACKAGE}
 
   tar -zc -f ${PKG_FILE} -C ${TMP_DIR} .
+
+  echo "Done."
 }
 
 install() {
-  if [ ! -f ${PKG_FILE} ]; then
-    build
-  fi
+  echo "Installing..."
 
-  sudo tar -zxv -f ${PKG_FILE} -C /
+  tar -zx -f ${PKG_FILE} -C /
+
+  echo "${PKG_NAME} has been installed into the system."
 }
 
 COMMAND=$1
@@ -47,14 +74,36 @@ shift
 OPTIONS=$*
 
 PKG_NAME=docker-root-pkg-${PACKAGE}-v${VERSION}
-PKG_FILE=${PKG_NAME}.tar.gz
+PKG_FILE=${PKG_DIR}/${PKG_NAME}.tar.gz
 
 case "${COMMAND}" in
   build)
-    build
+    if [ ! -f ${PKG_FILE} ]; then
+      download
+    fi
+    if [ ! -f ${PKG_FILE} ]; then
+      build
+    fi
+    if [ -f ${PKG_FILE} ]; then
+      echo "${PKG_NAME} has been in ${PKG_DIR}."
+    else
+      echo "Could not build/download ${PKG_NAME}" >&2
+      exit 1
+    fi
     ;;
   install)
-    install
+    if [ ! -f ${PKG_FILE} ]; then
+      download
+    fi
+    if [ ! -f ${PKG_FILE} ]; then
+      build
+    fi
+    if [ -f ${PKG_FILE} ]; then
+      install
+    else
+      echo "Could not install ${PKG_NAME}" >&2
+      exit 1
+    fi
     ;;
   *)
     usage
