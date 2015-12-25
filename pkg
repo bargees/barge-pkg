@@ -8,7 +8,7 @@ fi
 source /etc/os-release
 
 BUILDER=ailispaw/docker-root-pkg:${VERSION}
-PKG_DIR=/opt/pkg
+PKG_DIR=/opt/pkg/${VERSION}
 PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
 
 mkdir -p ${PKG_DIR}
