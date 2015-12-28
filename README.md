@@ -21,7 +21,7 @@ Install (and build if necessary) `/opt/pkg/docker-root-pkg-<package-name>-<versi
 [docker@docker-root ~]$ chmod +x pkg
 [docker@docker-root ~]$ sudo mkdir -p /opt/bin
 [docker@docker-root ~]$ sudo mv pkg /opt/bin
-[docker@docker-root ~]$ sudo pkg
+[docker@docker-root ~]$ pkg
 Usage: pkg <build|install> <package-name> [build options]
 ```
 

@@ -1,10 +1,5 @@
 #!/bin/sh
 
-if [ "$(id -u)" != "0" ]; then
-  echo "$(basename $0): Operation not permitted, must be root." >&2
-  exit 1
-fi
-
 source /etc/os-release
 
 BUILDER=ailispaw/docker-root-pkg:${VERSION}
@@ -24,11 +19,7 @@ download() {
   trap "rm -rf ${PKG_FILE}" ERR
   wget -qO ${PKG_FILE} ${PKG_URL}/${PKG_NAME}.tar.gz
 
-  if [ -f ${PKG_FILE} ]; then
-    echo "Done."
-  else
-    echo "NG."
-  fi
+  [ -f ${PKG_FILE} ] && echo "DONE" || echo "FAIL"
 }
 
 build() {
@@ -50,7 +41,7 @@ build() {
 
   tar -zc -f ${PKG_FILE} -C ${TMP_DIR} .
 
-  echo "Done."
+  echo "DONE"
 }
 
 install() {
@@ -62,28 +53,25 @@ install() {
 }
 
 COMMAND=$1
-if [ -z "${COMMAND}" ]; then
-  usage
-fi
+[ -z "${COMMAND}" ] && usage
 shift
 PACKAGE=$1
-if [ -z "${PACKAGE}" ]; then
-  usage
-fi
+[ -z "${PACKAGE}" ] && usage
 shift
 OPTIONS=$*
 
 PKG_NAME=docker-root-pkg-${PACKAGE}-v${VERSION}
 PKG_FILE=${PKG_DIR}/${PKG_NAME}.tar.gz
 
+if [ "$(id -u)" != "0" ]; then
+  echo "$(basename $0): Operation not permitted, must be root." >&2
+  exit 1
+fi
+
 case "${COMMAND}" in
   build)
-    if [ ! -f ${PKG_FILE} ]; then
-      download
-    fi
-    if [ ! -f ${PKG_FILE} ]; then
-      build
-    fi
+    [ ! -f ${PKG_FILE} ] && download
+    [ ! -f ${PKG_FILE} ] && build
     if [ -f ${PKG_FILE} ]; then
       echo "${PKG_NAME} has been in ${PKG_DIR}."
     else
@@ -92,12 +80,8 @@ case "${COMMAND}" in
     fi
     ;;
   install)
-    if [ ! -f ${PKG_FILE} ]; then
-      download
-    fi
-    if [ ! -f ${PKG_FILE} ]; then
-      build
-    fi
+    [ ! -f ${PKG_FILE} ] && download
+    [ ! -f ${PKG_FILE} ] && build
     if [ -f ${PKG_FILE} ]; then
       install
     else
