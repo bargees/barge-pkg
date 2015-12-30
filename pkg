@@ -7,7 +7,8 @@ PKG_DIR=/opt/pkg/${VERSION}
 PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
 
 usage() {
-  echo "Usage: $(basename $0) <build|install> <package-name> [build options]" >&2
+  echo "Usage: $(basename $0) {build|install} <package-name> [build options]" >&2
+  echo "       $(basename $0) show <package-name>" >&2
   exit 1
 }
 
@@ -50,6 +51,10 @@ install() {
   echo "${PKG_NAME} has been installed into the system."
 }
 
+show() {
+  tar -zt -f ${PKG_FILE}
+}
+
 COMMAND=$1
 [ -z "${COMMAND}" ] && usage
 shift
@@ -88,6 +93,9 @@ case "${COMMAND}" in
       echo "Could not install ${PKG_NAME}" >&2
       exit 1
     fi
+    ;;
+  show)
+    show
     ;;
   *)
     usage
