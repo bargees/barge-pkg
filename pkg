@@ -6,8 +6,6 @@ BUILDER=ailispaw/docker-root-pkg:${VERSION}
 PKG_DIR=/opt/pkg/${VERSION}
 PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
 
-mkdir -p ${PKG_DIR}
-
 usage() {
   echo "Usage: $(basename $0) <build|install> <package-name> [build options]" >&2
   exit 1
@@ -67,6 +65,8 @@ if [ "$(id -u)" != "0" ]; then
   echo "$(basename $0): Operation not permitted, must be root." >&2
   exit 1
 fi
+
+mkdir -p ${PKG_DIR}
 
 case "${COMMAND}" in
   build)
