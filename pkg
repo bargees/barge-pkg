@@ -9,6 +9,7 @@ PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
 usage() {
   echo "Usage: $(basename $0) {build|install} <package-name> [build options]" >&2
   echo "       $(basename $0) show <package-name>" >&2
+  echo "       $(basename $0) list" >&2
   exit 1
 }
 
@@ -57,6 +58,12 @@ show() {
 
 COMMAND=$1
 [ -z "${COMMAND}" ] && usage
+
+if [ "${COMMAND}" = "list" ]; then
+  ls -1l ${PKG_DIR}
+  exit
+fi
+
 shift
 PACKAGE=$1
 [ -z "${PACKAGE}" ] && usage
