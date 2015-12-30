@@ -3,16 +3,18 @@
 ## Usage
 
 ```
-pkg <build|install> <package-name> [build options]
+pkg {build|install} <package-name> [build options]
+pkg show <package-name>
+pkg list
 ```
 
 ### pkg build <package-name> [build options]
 
-Build a package and create `/opt/pkg/docker-root-pkg-<package-name>-<version>.tar.gz`. Or download it if the prebuilt package is available.
+Build a package and create `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz`. Or download it if the prebuilt package is available.
 
 ### pkg install <package-name> [build options]
 
-Install (and build if necessary) `/opt/pkg/docker-root-pkg-<package-name>-<version>.tar.gz` into the root filesystem.
+Install (and build if necessary) `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz` into the root filesystem.
 
 ## Install `pkg`
 
@@ -22,7 +24,9 @@ Install (and build if necessary) `/opt/pkg/docker-root-pkg-<package-name>-<versi
 [docker@docker-root ~]$ sudo mkdir -p /opt/bin
 [docker@docker-root ~]$ sudo mv pkg /opt/bin
 [docker@docker-root ~]$ pkg
-Usage: pkg <build|install> <package-name> [build options]
+Usage: pkg {build|install} <package-name> [build options]
+       pkg show <package-name>
+       pkg list
 ```
 
 ## Examples
@@ -31,7 +35,7 @@ Usage: pkg <build|install> <package-name> [build options]
 
 ```bash
 [docker@docker-root ~]$ sudo pkg build tar
-Downloading...NG.
+Downloading...FAIL
 Building...
 >>> tar 1.28 Downloading
 >>> tar 1.28 Extracting
@@ -46,10 +50,10 @@ Building...
 .
 .
 .
-docker-root-pkg-tar-v1.2.5 has been in /opt/pkg.
-[docker@docker-root ~]$ ls -l /opt/pkg
-total 1052
--rw-r--r--    1 root     root       1073765 Dec 24 05:51 docker-root-pkg-tar-v1.2.5.tar.gz
+DONE
+docker-root-pkg-tar-v1.2.5 has been in /opt/pkg/1.2.5.
+[docker@docker-root ~]$ pkg list
+-rw-r--r--    1   1072762 Dec 30 05:57 docker-root-pkg-tar-v1.2.5.tar.gz
 [docker@docker-root ~]$ sudo pkg install tar
 Installing...
 docker-root-pkg-tar-v1.2.5 has been installed into the system.
