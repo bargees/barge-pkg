@@ -7,7 +7,7 @@ PKG_DIR=/opt/pkg/${VERSION}
 PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
 
 usage() {
-  echo "Usage: $(basename $0) {build|install} <package-name> [build options]" >&2
+  echo "Usage: $(basename $0) {build|install} [-f] <package-name> [build options]" >&2
   echo "       $(basename $0) show <package-name>" >&2
   echo "       $(basename $0) list" >&2
   exit 1
@@ -65,8 +65,16 @@ if [ "${COMMAND}" = "list" ]; then
 fi
 
 shift
+
+FORCE_BUILD=false
+if [ "$1" = "-f" ]; then
+  FORCE_BUILD=true
+  shift
+fi
+
 PACKAGE=$1
 [ -z "${PACKAGE}" ] && usage
+
 shift
 OPTIONS=$*
 
@@ -82,8 +90,8 @@ mkdir -p ${PKG_DIR}
 
 case "${COMMAND}" in
   build)
-    [ ! -f ${PKG_FILE} ] && download
-    [ ! -f ${PKG_FILE} ] && build
+    [[ ("${FORCE_BUILD}" = false) && (! -f ${PKG_FILE}) ]] && download
+    [[ ("${FORCE_BUILD}" = true) || (! -f ${PKG_FILE}) ]] && build
     if [ -f ${PKG_FILE} ]; then
       echo "${PKG_NAME} has been in ${PKG_DIR}."
     else
@@ -92,8 +100,8 @@ case "${COMMAND}" in
     fi
     ;;
   install)
-    [ ! -f ${PKG_FILE} ] && download
-    [ ! -f ${PKG_FILE} ] && build
+    [[ ("${FORCE_BUILD}" = false) && (! -f ${PKG_FILE}) ]] && download
+    [[ ("${FORCE_BUILD}" = true) || (! -f ${PKG_FILE}) ]] && build
     if [ -f ${PKG_FILE} ]; then
       install
     else
