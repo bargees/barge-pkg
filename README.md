@@ -3,18 +3,28 @@
 ## Usage
 
 ```
-pkg {build|install} <package-name> [build options]
+pkg {build|install} [-f] <package-name> [build options]
 pkg show <package-name>
 pkg list
 ```
 
-### pkg build <package-name> [build options]
+### pkg build [-f] <package-name> [build options]
 
-Build a package and create `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz`. Or download it if the prebuilt package is available.
+Build a package and create `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz`. Or download it if the prebuilt package is available.  
+`-f` option forces it to build a package.
 
-### pkg install <package-name> [build options]
+### pkg install [-f] <package-name> [build options]
 
-Install (and build if necessary) `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz` into the root filesystem.
+Install (and build/download if necessary) `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz` into the root filesystem.  
+`-f` option forces it to build a package and then install.
+
+### pkg show <package-name>
+
+List files and directroies in `/opt/pkg/<version>/docker-root-pkg-<package-name>-<version>.tar.gz` to install.
+
+### pkg list
+
+List `/opt/pkg/<version>/docker-root-pkg-*-<version>.tar.gz` you have locally.
 
 ## Install `pkg`
 
@@ -24,7 +34,7 @@ Install (and build if necessary) `/opt/pkg/<version>/docker-root-pkg-<package-na
 [docker@docker-root ~]$ sudo mkdir -p /opt/bin
 [docker@docker-root ~]$ sudo mv pkg /opt/bin
 [docker@docker-root ~]$ pkg
-Usage: pkg {build|install} <package-name> [build options]
+Usage: pkg {build|install} [-f] <package-name> [build options]
        pkg show <package-name>
        pkg list
 ```
