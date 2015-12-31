@@ -60,7 +60,7 @@ COMMAND=$1
 [ -z "${COMMAND}" ] && usage
 
 if [ "${COMMAND}" = "list" ]; then
-  ls -1l ${PKG_DIR}
+  ls -1l ${PKG_DIR} 2> /dev/null
   exit
 fi
 
