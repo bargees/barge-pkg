@@ -52,10 +52,6 @@ install() {
   echo "${PKG_NAME} has been installed into the system."
 }
 
-show() {
-  tar -zt -f ${PKG_FILE}
-}
-
 COMMAND=$1
 [ -z "${COMMAND}" ] && usage
 
@@ -75,11 +71,16 @@ fi
 PACKAGE=$1
 [ -z "${PACKAGE}" ] && usage
 
-shift
-OPTIONS=$*
-
 PKG_NAME=docker-root-pkg-${PACKAGE}-v${VERSION}
 PKG_FILE=${PKG_DIR}/${PKG_NAME}.tar.gz
+
+if [ "${COMMAND}" = "show" ]; then
+  tar -zt -f ${PKG_FILE}
+  exit
+fi
+
+shift
+OPTIONS=$*
 
 if [ "$(id -u)" != "0" ]; then
   echo "$(basename $0): Operation not permitted, must be root." >&2
@@ -108,9 +109,6 @@ case "${COMMAND}" in
       echo "Could not install ${PKG_NAME}" >&2
       exit 1
     fi
-    ;;
-  show)
-    show
     ;;
   *)
     usage
