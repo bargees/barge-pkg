@@ -30,5 +30,5 @@ WORKDIR ${BUILDROOT}
 RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
     make BR2_EXTERNAL=${SRCDIR}/extra oldconfig && \
     make --quiet && \
-    rm -rf board/* configs/* dl/* && \
+    rm -rf board/* configs/* dl/* output/images/* output/target/* && \
     find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf
