@@ -2,33 +2,30 @@ FROM ubuntu-debootstrap:14.04.3
 
 ENV TERM xterm
 
-RUN apt-get update && \
-    apt-get install -y ca-certificates curl git && \
-    apt-get install -y unzip bc wget python xz-utils build-essential libncurses5-dev && \
+RUN apt-get -q update && \
+    apt-get -q -y install ca-certificates \
+      bc build-essential python unzip rsync wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Setup Buildroot
-ENV SRCDIR /build
-RUN mkdir -p ${SRCDIR}
+# Setup environment
+ENV SRC_DIR=/build \
+    BR_ROOT=/build/buildroot
+RUN mkdir -p ${SRC_DIR}
 
-ENV BUILDROOT_VERSION 2015.11.1
-ENV BUILDROOT ${SRCDIR}/buildroot
-RUN cd ${SRCDIR} && \
-    curl -OL http://buildroot.uclibc.org/downloads/buildroot-${BUILDROOT_VERSION}.tar.bz2 && \
-    tar xf buildroot-${BUILDROOT_VERSION}.tar.bz2 && \
-    mv buildroot-${BUILDROOT_VERSION} buildroot && \
-    rm -f buildroot-${BUILDROOT_VERSION}.tar.bz2
+ENV BR_VERSION 2015.11.1
+RUN wget -qO- http://buildroot.uclibc.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
+    mv buildroot-${BR_VERSION} ${BR_ROOT}
 
 # Copy the empty config file
-COPY empty.config ${BUILDROOT}/.config
+COPY empty.config ${BR_ROOT}/.config
 
 # Copy extra packages
-COPY extra ${SRCDIR}/extra/
+COPY extra ${SRC_DIR}/extra
 
-WORKDIR ${BUILDROOT}
+WORKDIR ${BR_ROOT}
 
 RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
-    make BR2_EXTERNAL=${SRCDIR}/extra oldconfig && \
+    make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig && \
     make --quiet && \
     rm -rf board/* configs/* dl/* output/images/* output/target/* && \
     find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf
