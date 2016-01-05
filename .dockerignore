@@ -8,4 +8,7 @@ README.md
 
 pkg
 
+Vagrantfile
+.vagrant/
+
 *.tar.gz
