@@ -1,4 +1,3 @@
-https://kernel.org/pub/linux/utils/kernel/ipvsadm/
 ################################################################################
 #
 # ipvsadm
