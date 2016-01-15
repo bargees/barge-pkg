@@ -100,3 +100,9 @@ docker-root-pkg-tar-v1.2.5 has been installed into the system.
 ```bash
 [docker@docker-root ~]$ sudo pkg install ipvsadm -e BR2_PACKAGE_LIBNL=y
 ```
+
+### vim
+
+```bash
+[docker@docker-root ~]$ sudo pkg install vim
+```
