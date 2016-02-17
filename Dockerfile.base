@@ -19,7 +19,9 @@ RUN wget -qO- http://buildroot.uclibc.org/downloads/buildroot-${BR_VERSION}.tar.
 # Apply patches
 RUN mkdir -p ${SRC_DIR}/patches && \
     wget -qO ${SRC_DIR}/patches/openssh.patch https://raw.githubusercontent.com/ailispaw/docker-root/master/patches/openssh.patch && \
-    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssh.patch
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssh.patch && \
+    mkdir -p ${BR_ROOT}/package/glibc/2.21 && \
+    wget -qO ${BR_ROOT}/package/glibc/2.21/0001-fix-CVE-2015-7547.patch https://raw.githubusercontent.com/ailispaw/docker-root/master/patches/glibc/2.21/0001-fix-CVE-2015-7547.patch
 
 # Copy the empty config file
 COPY empty.config ${BR_ROOT}/.config
