@@ -12,16 +12,9 @@ ENV SRC_DIR=/build \
     BR_ROOT=/build/buildroot
 RUN mkdir -p ${SRC_DIR}
 
-ENV BR_VERSION 2015.11.1
-RUN wget -qO- http://buildroot.uclibc.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
+ENV BR_VERSION 2016.02
+RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
     mv buildroot-${BR_VERSION} ${BR_ROOT}
-
-# Apply patches
-RUN mkdir -p ${SRC_DIR}/patches && \
-    wget -qO ${SRC_DIR}/patches/openssh.patch https://raw.githubusercontent.com/ailispaw/docker-root/master/patches/openssh.patch && \
-    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssh.patch && \
-    mkdir -p ${BR_ROOT}/package/glibc/2.21 && \
-    wget -qO ${BR_ROOT}/package/glibc/2.21/0001-fix-CVE-2015-7547.patch https://raw.githubusercontent.com/ailispaw/docker-root/master/patches/glibc/2.21/0001-fix-CVE-2015-7547.patch
 
 # Copy the empty config file
 COPY empty.config ${BR_ROOT}/.config
