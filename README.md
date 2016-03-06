@@ -106,3 +106,15 @@ docker-root-pkg-tar-v1.2.5 has been installed into the system.
 ```bash
 [docker@docker-root ~]$ sudo pkg install vim
 ```
+
+### libfuse
+
+```bash
+[docker@docker-root ~]$ sudo pkg install libfuse
+```
+
+### SSHFS
+
+```bash
+[docker@docker-root ~]$ sudo pkg install sshfs
+```
