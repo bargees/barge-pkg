@@ -1,0 +1,25 @@
+From e6981ab42647b3d92a93ab0176dd316ef5df59d5 Mon Sep 17 00:00:00 2001
+From: "A.I" <ailis@paw.zone>
+Date: Thu, 10 Mar 2016 14:53:52 +0900
+Subject: [PATCH] Remove quotes around $(CC) for buildroot
+
+---
+ criu/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/criu/Makefile b/criu/Makefile
+index 9f1dd38..144a6df 100644
+--- a/criu/Makefile
++++ b/criu/Makefile
+@@ -64,7 +64,7 @@ ifneq ($(MAKECMDGOALS),clean)
+         ifneq ($(shell sh -c                                                            \
+                         'TMP="$(OUTPUT)$(TMPOUT).$$$$";                                 \
+                         echo "int main(int argc, char *argv[]) { return 0; }" |         \
+-                        "$(CC)" -x c - $(LIBS) -o "$$TMP" > /dev/null 2>&1 && echo y;   \
++                        $(CC) -x c - $(LIBS) -o "$$TMP" > /dev/null 2>&1 && echo y;   \
+                         rm -f "$$TMP"'),y)
+                 $(error "Make sure '$(REQ-LIBS-NAMES)' libraries are installed")
+         endif
+-- 
+2.5.4 (Apple Git-61)
+
