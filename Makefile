@@ -5,6 +5,7 @@ SOURCES := .dockerignore empty.config
 
 EXTRA := extra/Config.in extra/external.mk \
 	extra/package/criu/Config.in extra/package/criu/criu.mk \
+	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
 
 base: Dockerfile.base $(SOURCES)
