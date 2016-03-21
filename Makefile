@@ -29,7 +29,13 @@ extra: Dockerfile.extra $(EXTRA) | base
 release: Dockerfile $(SOURCES) $(EXTRA)
 	docker build -t $(BUILDER):$(VERSION) .
 
+patch: Dockerfile.patch
+	docker build -f $< -t $(BUILDER):$(VERSION)-patched .
+	docker tag $(BUILDER):$(VERSION) $(BUILDER):$(VERSION)-org
+	docker rmi $(BUILDER):$(VERSION)
+	docker tag $(BUILDER):$(VERSION)-patched $(BUILDER):$(VERSION)
+
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
 
-.PHONY: base extra release clean
+.PHONY: base extra release patch clean
