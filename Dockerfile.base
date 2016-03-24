@@ -16,6 +16,10 @@ ENV BR_VERSION 2016.02
 RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
     mv buildroot-${BR_VERSION} ${BR_ROOT}
 
+RUN mkdir -p ${SRC_DIR}/patches && \
+    wget -qO ${SRC_DIR}/patches/git-2.7.4.patch https://github.com/buildroot/buildroot/commit/8d73629bb2e4613abd31aa74c686b0a217aca0c6.patch && \
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/git-2.7.4.patch
+
 # Copy the empty config file
 COPY empty.config ${BR_ROOT}/.config
 
