@@ -118,3 +118,16 @@ docker-root-pkg-tar-v1.2.5 has been installed into the system.
 ```bash
 [docker@docker-root ~]$ sudo pkg install sshfs
 ```
+
+### tzdata
+
+To change timezone;
+
+```bash
+[docker@docker-root ~]$ sudo pkg install tzdata -e BR2_TARGET_TZ_ZONELIST=default
+[docker@docker-root ~]$ echo 'Europe/Paris' | sudo tee /etc/timezone
+Europe/Paris
+[docker@docker-root ~]$ sudo cp -L /usr/share/zoneinfo/Europe/Paris /etc/localtime
+[docker@docker-root ~]$ date
+Thu Mar 31 01:48:15 CEST 2016
+```
