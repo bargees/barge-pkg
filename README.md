@@ -28,6 +28,8 @@ List `/opt/pkg/<version>/docker-root-pkg-*-<version>.tar.gz` you have locally.
 
 ## Install `pkg`
 
+***It has been pre-installed since DockerRoot v1.3.2.***
+
 ```bash
 [docker@docker-root ~]$ wget https://raw.githubusercontent.com/ailispaw/docker-root-pkg/master/pkg
 [docker@docker-root ~]$ chmod +x pkg
