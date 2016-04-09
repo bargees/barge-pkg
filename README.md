@@ -133,3 +133,9 @@ Europe/Paris
 [docker@docker-root ~]$ date
 Thu Mar 31 01:48:15 CEST 2016
 ```
+
+### bindfs
+
+```bash
+[docker@docker-root ~]$ sudo pkg install bindfs
+```
