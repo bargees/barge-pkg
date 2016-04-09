@@ -4,6 +4,7 @@ VERSION := 1.3.7
 SOURCES := .dockerignore empty.config
 
 EXTRA := extra/Config.in extra/external.mk \
+	extra/package/bindfs/Config.in extra/package/bindfs/bindfs.mk \
 	extra/package/criu/Config.in extra/package/criu/criu.mk \
 	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
