@@ -1,0 +1,14 @@
+config BR2_PACKAGE_BINDFS
+	bool "bindfs"
+	select BR2_PACKAGE_LIBFUSE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	help
+	  Mount a directory to another location and alter permission bits.
+
+	  http://bindfs.org/
+
+comment "bindfs needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
