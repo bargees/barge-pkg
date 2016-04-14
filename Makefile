@@ -36,7 +36,10 @@ patch: Dockerfile.patch
 	docker rmi $(BUILDER):$(VERSION)
 	docker tag $(BUILDER):$(VERSION)-patched $(BUILDER):$(VERSION)
 
+vagrant:
+	vagrant up
+
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
 
-.PHONY: base extra release patch clean
+.PHONY: base extra release patch vagrant clean
