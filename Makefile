@@ -9,6 +9,13 @@ EXTRA := extra/Config.in extra/external.mk \
 	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
 
+build: Dockerfile $(SOURCES) $(EXTRA)
+	find . -type f -name '.DS_Store' | xargs rm -f
+	docker build -t $(BUILDER):$(VERSION) .
+
+release: build
+	docker push $(BUILDER):$(VERSION)
+
 base: Dockerfile.base $(SOURCES)
 	$(eval SRC_UPDATED=$$(shell stat -f "%m" $^ | sort -gr | head -n1))
 	$(eval STR_CREATED=$$(shell docker inspect -f '{{.Created}}' $(BUILDER):$@ 2>/dev/null))
@@ -24,11 +31,9 @@ extra: Dockerfile.extra $(EXTRA) | base
 	$(eval IMG_CREATED=`date -j -u -f "%FT%T" "$$(STR_CREATED)" +"%s" 2>/dev/null || echo 0`)
 	@if [ "$(SRC_UPDATED)" -gt "$(IMG_CREATED)" ]; then \
 		set -e; \
+		find . -type f -name '.DS_Store' | xargs rm -f; \
 		docker build -f $< -t $(BUILDER):$(VERSION) .; \
 	fi
-
-release: Dockerfile $(SOURCES) $(EXTRA)
-	docker build -t $(BUILDER):$(VERSION) .
 
 patch: Dockerfile.patch
 	docker build -f $< -t $(BUILDER):$(VERSION)-patched .
@@ -42,4 +47,4 @@ vagrant:
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
 
-.PHONY: base extra release patch vagrant clean
+.PHONY: build release base extra patch vagrant clean
