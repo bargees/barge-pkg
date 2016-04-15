@@ -12,6 +12,7 @@ EXTRA := extra/Config.in extra/external.mk \
 build: Dockerfile $(SOURCES) $(EXTRA)
 	find . -type f -name '.DS_Store' | xargs rm -f
 	docker build -t $(BUILDER):$(VERSION) .
+	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > docker-root-pkg-libstdcxx-v$(VERSION).tar.gz
 
 release: build
 	docker push $(BUILDER):$(VERSION)
@@ -46,5 +47,6 @@ vagrant:
 
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
+	$(RM) docker-root-pkg-*.tar.gz
 
 .PHONY: build release base extra patch vagrant clean
