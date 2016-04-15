@@ -11,4 +11,4 @@ pkg
 Vagrantfile
 .vagrant/
 
-*.tar.gz
+output/

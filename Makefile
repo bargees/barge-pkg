@@ -9,10 +9,10 @@ EXTRA := extra/Config.in extra/external.mk \
 	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
 
-build: Dockerfile $(SOURCES) $(EXTRA)
+build: Dockerfile $(SOURCES) $(EXTRA) | output
 	find . -type f -name '.DS_Store' | xargs rm -f
 	docker build -t $(BUILDER):$(VERSION) .
-	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > docker-root-pkg-libstdcxx-v$(VERSION).tar.gz
+	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > output/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz
 
 release: build
 	docker push $(BUILDER):$(VERSION)
@@ -45,8 +45,11 @@ patch: Dockerfile.patch
 vagrant:
 	vagrant up
 
+output:
+	mkdir -p $@
+
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
 	$(RM) docker-root-pkg-*.tar.gz
 
-.PHONY: build release base extra patch vagrant clean
+.PHONY: build release base extra patch vagrant output clean
