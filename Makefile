@@ -9,10 +9,9 @@ EXTRA := extra/Config.in extra/external.mk \
 	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
 
-build: Dockerfile $(SOURCES) $(EXTRA) | output
+build: Dockerfile $(SOURCES) $(EXTRA)
 	find . -type f -name '.DS_Store' | xargs rm -f
 	docker build -t $(BUILDER):$(VERSION) .
-	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > output/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz
 
 release: build
 	docker push $(BUILDER):$(VERSION)
@@ -45,11 +44,29 @@ patch: Dockerfile.patch
 vagrant:
 	vagrant up
 
-output:
-	mkdir -p $@
-
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
-	$(RM) docker-root-pkg-*.tar.gz
 
-.PHONY: build release base extra patch vagrant output clean
+.PHONY: build release base extra patch vagrant clean
+
+config: output/v$(VERSION)/buildroot.config
+
+output/v$(VERSION)/buildroot.config: | output
+	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
+
+PACKAGES := libstdcxx
+
+packages: $(PACKAGES)
+
+$(PACKAGES): % : output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz
+
+output/v$(VERSION)/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz: | output
+	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
+
+output:
+	mkdir -p $@/v$(VERSION)
+
+distclean:
+	$(RM) -r output
+
+.PHONY: config packages $(PACKAGES) output distclean
