@@ -48,3 +48,25 @@ clean:
 	-docker rmi $(BUILDER):$(VERSION)
 
 .PHONY: build release base extra patch vagrant clean
+
+config: output/v$(VERSION)/buildroot.config
+
+output/v$(VERSION)/buildroot.config: | output
+	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
+
+PACKAGES := libstdcxx
+
+packages: $(PACKAGES)
+
+$(PACKAGES): % : output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz
+
+output/v$(VERSION)/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz: | output
+	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
+
+output:
+	mkdir -p $@/v$(VERSION)
+
+distclean:
+	$(RM) -r output
+
+.PHONY: config packages $(PACKAGES) output distclean

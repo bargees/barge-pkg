@@ -2,4 +2,4 @@
 
 .vagrant/
 
-*.tar.gz
+output/
