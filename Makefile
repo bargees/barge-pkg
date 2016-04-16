@@ -54,7 +54,11 @@ config: output/v$(VERSION)/buildroot.config
 output/v$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := libstdcxx
+PACKAGES := libstdcxx bindfs criu git ipvsadm libfuse sshfs tzdata vim
+
+IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
+GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
+TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default
 
 packages: $(PACKAGES)
 
@@ -62,6 +66,25 @@ $(PACKAGES): % : output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz
 
 output/v$(VERSION)/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
+
+output/v$(VERSION)/docker-root-pkg-bindfs-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-criu-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-git-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-ipvsadm-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-libfuse-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-sshfs-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-tzdata-v$(VERSION).tar.gz \
+output/v$(VERSION)/docker-root-pkg-vim-v$(VERSION).tar.gz: \
+	output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz: | output
+	$(eval TMP_DIR=/tmp/docker-root-pkg-$*-v$(VERSION))
+	vagrant ssh -c 'sudo rm -rf $(TMP_DIR) && sudo mkdir -p $(TMP_DIR) && \
+		for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do \
+			sudo mkdir -p $(TMP_DIR)/$$i; \
+		done; \
+		docker run --rm -v $(TMP_DIR):/build/buildroot/output/target \
+			$($(shell echo $* | tr a-z A-Z)_OPTIONS) \
+			$(BUILDER):$(VERSION) make --quiet $*; \
+		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
 
 output:
 	mkdir -p $@/v$(VERSION)
