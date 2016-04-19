@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "ailispaw/docker-root"
 
-  config.vm.box_version = ">= 1.1.2"
+  config.vm.box_version = ">= 1.3.9"
 
   config.vm.provider :virtualbox do |vb|
     vb.memory = 2048
@@ -25,16 +25,4 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "nfs",
     mount_options: ["nolock", "vers=3", "udp", "noatime", "actimeo=1"]
-
-  if Vagrant.has_plugin?("vagrant-triggers") then
-    config.trigger.after [:up, :resume] do
-      info "Adjusting datetime after suspend and resume."
-      run_remote "sudo sntp -4sSc pool.ntp.org; date"
-    end
-  end
-
-  # Adjusting datetime before provisioning.
-  config.vm.provision "timesync", type: "shell", run: "always" do |sh|
-    sh.inline = "sntp -4sSc pool.ntp.org; date"
-  end
 end
