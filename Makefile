@@ -82,7 +82,9 @@ output/v$(VERSION)/docker-root-pkg-vim-v$(VERSION).tar.gz: \
 		for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do \
 			sudo mkdir -p $(TMP_DIR)/$$i; \
 		done; \
+		sudo mkdir -p /opt/pkg/ccache /opt/pkg/dl && \
 		docker run --rm -v $(TMP_DIR):/build/buildroot/output/target \
+			-v /opt/pkg/ccache:/build/buildroot/ccache -v /opt/pkg/dl:/build/buildroot/dl \
 			$($(shell echo $* | tr a-z A-Z)_OPTIONS) \
 			$(BUILDER):$(VERSION) make --quiet $*; \
 		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
