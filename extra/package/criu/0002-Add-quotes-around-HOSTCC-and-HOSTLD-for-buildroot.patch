@@ -1,0 +1,25 @@
+From c52607673c436df79dd3b8881866dd0b4ae4cbbf Mon Sep 17 00:00:00 2001
+From: "A.I" <ailis@paw.zone>
+Date: Wed, 20 Apr 2016 12:56:27 -0700
+Subject: [PATCH 2/2] Add quotes around $(HOSTCC) and $(HOSTLD) for buildroot
+
+---
+ criu/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/criu/Makefile b/criu/Makefile
+index 5b56c0d..8c38bd4 100644
+--- a/criu/Makefile
++++ b/criu/Makefile
+@@ -149,7 +149,7 @@ ifeq ($(piegen-y),y)
+ piegen-bin		:= pie/piegen/piegen
+ 
+ pie/piegen/%: config
+-	$(Q) CC=$(HOSTCC) LD=$(HOSTLD) CFLAGS="$(ccflags-y) $(HOSTCFLAGS) $(WARNINGS) $(DEFINES)" $(MAKE) $(build)=pie/piegen $@
++	$(Q) CC="$(HOSTCC)" LD="$(HOSTLD)" CFLAGS="$(ccflags-y) $(HOSTCFLAGS) $(WARNINGS) $(DEFINES)" $(MAKE) $(build)=pie/piegen $@
+ $(piegen-bin): pie/piegen/built-in.o
+ 	$(call msg-link, $@)
+ 	$(Q) $(HOSTCC) $(HOSTCFLAGS) $^ $(LDFLAGS) -o $@
+-- 
+2.5.4 (Apple Git-61)
+
