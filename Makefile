@@ -77,7 +77,8 @@ output/v$(VERSION)/docker-root-pkg-tzdata-v$(VERSION).tar.gz \
 output/v$(VERSION)/docker-root-pkg-vim-v$(VERSION).tar.gz: \
 	output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz: | output
 	$(eval TMP_DIR=/tmp/docker-root-pkg-$*-v$(VERSION))
-	vagrant ssh -c 'sudo rm -rf $(TMP_DIR) && sudo mkdir -p $(TMP_DIR) && \
+	vagrant ssh -c 'set -e; \
+		sudo rm -rf $(TMP_DIR) && sudo mkdir -p $(TMP_DIR) && \
 		for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do \
 			sudo mkdir -p $(TMP_DIR)/$$i; \
 		done; \
