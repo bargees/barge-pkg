@@ -1,7 +1,7 @@
 From ef6e9ba9a1a3f5ce7113aa19c4ffb5bbe5c7d217 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Thu, 10 Mar 2016 14:53:52 +0900
-Subject: [PATCH] Remove quotes around $(CC) for buildroot
+Subject: [PATCH 1/2] Remove quotes around $(CC) for buildroot
 
 ---
  criu/Makefile | 2 +-
