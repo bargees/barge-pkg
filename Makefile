@@ -1,5 +1,5 @@
 BUILDER := ailispaw/docker-root-pkg
-VERSION := 1.3.9
+VERSION := 1.3.10
 
 SOURCES := .dockerignore empty.config
 
