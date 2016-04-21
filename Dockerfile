@@ -33,4 +33,4 @@ RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
     make --quiet && \
     find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf && \
     find output/target/ -name 'libstdc++.so*' | tar zcf ${SRC_DIR}/libstdcxx.tar.gz --transform 's?output/target?.?g' -T - && \
-    rm -rf board/* configs/* dl/* output/images/* output/target/*
+    rm -rf board/* configs/* dl/* output/images/* output/target/* ccache/*
