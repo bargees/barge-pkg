@@ -1,5 +1,5 @@
-BUILDER := ailispaw/docker-root-pkg
-VERSION := 1.3.10
+BUILDER := ailispaw/barge-pkg
+VERSION := 2.0.0
 
 SOURCES := .dockerignore empty.config
 
@@ -36,23 +36,17 @@ extra: Dockerfile.extra $(EXTRA) | base
 		docker build -f $< -t $(BUILDER):$(VERSION) .; \
 	fi
 
-patch: Dockerfile.patch
-	docker build -f $< -t $(BUILDER):$(VERSION)-patched .
-	docker tag $(BUILDER):$(VERSION) $(BUILDER):$(VERSION)-org
-	docker rmi $(BUILDER):$(VERSION)
-	docker tag $(BUILDER):$(VERSION)-patched $(BUILDER):$(VERSION)
-
 vagrant:
 	vagrant up
 
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
 
-.PHONY: build release base extra patch vagrant clean
+.PHONY: build release base extra vagrant clean
 
-config: output/v$(VERSION)/buildroot.config
+config: output/$(VERSION)/buildroot.config
 
-output/v$(VERSION)/buildroot.config: | output
+output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
 PACKAGES := libstdcxx bindfs criu git ipvsadm libfuse sshfs tzdata vim
@@ -63,21 +57,21 @@ TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default
 
 packages: $(PACKAGES)
 
-$(PACKAGES): % : output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz
+$(PACKAGES): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
 
-output/v$(VERSION)/docker-root-pkg-libstdcxx-v$(VERSION).tar.gz: | output
+output/$(VERSION)/barge-pkg-libstdcxx-$(VERSION).tar.gz: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
 
-output/v$(VERSION)/docker-root-pkg-bindfs-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-criu-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-git-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-ipvsadm-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-libfuse-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-sshfs-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-tzdata-v$(VERSION).tar.gz \
-output/v$(VERSION)/docker-root-pkg-vim-v$(VERSION).tar.gz: \
-	output/v$(VERSION)/docker-root-pkg-%-v$(VERSION).tar.gz: | output
-	$(eval TMP_DIR=/tmp/docker-root-pkg-$*-v$(VERSION))
+output/$(VERSION)/barge-pkg-bindfs-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-criu-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-git-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-ipvsadm-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-libfuse-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-sshfs-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-tzdata-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-vim-$(VERSION).tar.gz: \
+	output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz: | output
+	$(eval TMP_DIR=/tmp/barge-pkg-$*-$(VERSION))
 	vagrant ssh -c 'set -e; \
 		sudo rm -rf $(TMP_DIR) && sudo mkdir -p $(TMP_DIR) && \
 		for i in bin dev/pts etc/ld.so.conf.d etc/network lib sbin usr/bin usr/lib usr/sbin var/lib/misc; do \
@@ -91,7 +85,7 @@ output/v$(VERSION)/docker-root-pkg-vim-v$(VERSION).tar.gz: \
 		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
 
 output:
-	mkdir -p $@/v$(VERSION)
+	mkdir -p $@/$(VERSION)
 
 distclean:
 	$(RM) -r output

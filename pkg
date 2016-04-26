@@ -2,9 +2,9 @@
 
 source /etc/os-release
 
-BUILDER=ailispaw/docker-root-pkg:${VERSION}
+BUILDER=ailispaw/barge-pkg:${VERSION}
 PKG_DIR=/opt/pkg/${VERSION}
-PKG_URL=https://github.com/ailispaw/docker-root-pkg/releases/download/${VERSION}
+PKG_URL=https://github.com/bargees/barge-pkg/releases/download/${VERSION}
 
 usage() {
   echo "Usage: $(basename $0) {build|install} [-f] <package-name> [build options]" >&2
@@ -71,7 +71,7 @@ fi
 PACKAGE=$1
 [ -z "${PACKAGE}" ] && usage
 
-PKG_NAME=docker-root-pkg-${PACKAGE}-v${VERSION}
+PKG_NAME=barge-pkg-${PACKAGE}-${VERSION}
 PKG_FILE=${PKG_DIR}/${PKG_NAME}.tar.gz
 
 if [ "${COMMAND}" = "show" ]; then

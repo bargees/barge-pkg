@@ -1,4 +1,4 @@
-FROM ailispaw/docker-root-pkg:base
+FROM ailispaw/barge-pkg:base
 
 # Copy extra packages
 COPY extra ${SRC_DIR}/extra
