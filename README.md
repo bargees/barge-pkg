@@ -48,9 +48,9 @@ Building...
 .
 .
 DONE
-barge-pkg-tar-v2.0.0 has been in /opt/pkg/2.0.0.
+barge-pkg-tar-2.0.0 has been in /opt/pkg/2.0.0.
 [bargee@barge ~]$ pkg list
--rw-r--r--    1   1072762 Dec 30 05:57 barge-pkg-tar-2.0.0.tar.gz
+-rw-r--r--    1   1072814 Apr 27 00:45 barge-pkg-tar-2.0.0.tar.gz
 [bargee@barge ~]$ sudo pkg install tar
 Installing...
 barge-pkg-tar-2.0.0 has been installed into the system.
@@ -117,6 +117,16 @@ Europe/Paris
 [bargee@barge ~]$ sudo cp -L /usr/share/zoneinfo/Europe/Paris /etc/localtime
 [bargee@barge ~]$ date
 Thu Mar 31 01:48:15 CEST 2016
+```
+
+To set back to 'UTC';
+
+```bash
+[bargee@barge ~]$ echo 'Etc/UTC' | sudo tee /etc/timezone
+Etc/UTC
+[bargee@barge ~]$ sudo ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+[bargee@barge ~]$ date
+Wed Apr 27 00:48:41 UTC 2016
 ```
 
 ### bindfs
