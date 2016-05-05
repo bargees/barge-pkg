@@ -18,7 +18,15 @@ RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | 
 
 RUN mkdir -p ${SRC_DIR}/patches && \
     wget -qO ${SRC_DIR}/patches/git-2.7.4.patch https://github.com/buildroot/buildroot/commit/8d73629bb2e4613abd31aa74c686b0a217aca0c6.patch && \
-    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/git-2.7.4.patch
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/git-2.7.4.patch && \
+    wget -qO ${SRC_DIR}/patches/ntp.patch https://raw.githubusercontent.com/bargees/barge-os/2.0.1/patches/ntp.patch && \
+    wget -qO ${SRC_DIR}/patches/openssh-01.patch https://raw.githubusercontent.com/bargees/barge-os/2.0.1/patches/openssh-01.patch && \
+    wget -qO ${SRC_DIR}/patches/openssh-02.patch https://raw.githubusercontent.com/bargees/barge-os/2.0.1/patches/openssh-02.patch && \
+    wget -qO ${SRC_DIR}/patches/openssl.patch https://raw.githubusercontent.com/bargees/barge-os/2.0.1/patches/openssl.patch && \
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/ntp.patch && \
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssh-01.patch && \
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssh-02.patch && \
+    patch -p1 -d ${BR_ROOT} < ${SRC_DIR}/patches/openssl.patch
 
 # Copy the empty config file
 COPY empty.config ${BR_ROOT}/.config
