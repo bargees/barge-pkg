@@ -8,7 +8,8 @@ EXTRA := extra/Config.in extra/external.mk \
 	extra/package/criu/Config.in extra/package/criu/criu.mk \
 	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
 	extra/package/criu/0002-Add-quotes-around-HOSTCC-and-HOSTLD-for-buildroot.patch \
-	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk
+	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk \
+	extra/package/su-exec/Config.in extra/package/su-exec/su-exec.mk
 
 build: Dockerfile $(SOURCES) $(EXTRA)
 	find . -type f -name '.DS_Store' | xargs rm -f
@@ -43,7 +44,7 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := libstdcxx bindfs criu git ipvsadm libfuse sshfs tzdata vim
+PACKAGES := libstdcxx bindfs criu git ipvsadm libfuse sshfs su-exec tzdata vim
 
 IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
@@ -62,6 +63,7 @@ output/$(VERSION)/barge-pkg-git-$(VERSION).tar.gz \
 output/$(VERSION)/barge-pkg-ipvsadm-$(VERSION).tar.gz \
 output/$(VERSION)/barge-pkg-libfuse-$(VERSION).tar.gz \
 output/$(VERSION)/barge-pkg-sshfs-$(VERSION).tar.gz \
+output/$(VERSION)/barge-pkg-su-exec-$(VERSION).tar.gz \
 output/$(VERSION)/barge-pkg-tzdata-$(VERSION).tar.gz \
 output/$(VERSION)/barge-pkg-vim-$(VERSION).tar.gz: \
 	output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz: | output
