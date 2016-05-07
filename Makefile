@@ -5,31 +5,36 @@ SOURCES := .dockerignore empty.config
 
 EXTRA := $(shell find extra -type f)
 
-build: Dockerfile $(SOURCES) $(EXTRA)
-	find . -type f -name '.DS_Store' | xargs rm -f
-	docker build -t $(BUILDER):$(VERSION) .
-
-release: build
-	docker push $(BUILDER):$(VERSION)
-
-base:
-	docker tag -f $(BUILDER):$(VERSION) $(BUILDER):base
-
-extra: Dockerfile.extra $(EXTRA)
-	$(eval SRC_UPDATED=$$(shell stat -f "%m" $^ | sort -gr | head -n1))
-	$(eval STR_CREATED=$$(shell docker inspect -f '{{.Created}}' $(BUILDER):$(VERSION) 2>/dev/null))
+# $1: Dockerfile
+# $2: image-name:tag
+# $3: dependencies
+define docker_build
+	$(eval SRC_UPDATED=$$(shell stat -f "%m" $3 | sort -gr | head -n1))
+	$(eval STR_CREATED=$$(shell docker inspect -f '{{.Created}}' $2 2>/dev/null))
 	$(eval IMG_CREATED=`date -j -u -f "%FT%T" "$$(STR_CREATED)" +"%s" 2>/dev/null || echo 0`)
 	@if [ "$(SRC_UPDATED)" -gt "$(IMG_CREATED)" ]; then \
 		set -e; \
 		find . -type f -name '.DS_Store' | xargs rm -f; \
-		docker build -f $< -t $(BUILDER):$(VERSION) .; \
+		docker build -f $1 -t $2 .; \
 	fi
+endef
+
+build: Dockerfile $(SOURCES) $(EXTRA)
+	$(call docker_build,$<,$(BUILDER),$^)
+
+release: | build
+	docker tag -f $(BUILDER) $(BUILDER):$(VERSION)
+	docker push $(BUILDER):$(VERSION)
+
+extra: Dockerfile.extra $(EXTRA)
+	$(call docker_build,$<,$(BUILDER):$(VERSION),$^)
 
 vagrant:
 	vagrant up
 
 clean:
 	-docker rmi $(BUILDER):$(VERSION)
+	-docker rmi $(BUILDER)
 
 .PHONY: build release base extra vagrant clean
 
