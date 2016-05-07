@@ -3,13 +3,7 @@ VERSION := 2.0.1
 
 SOURCES := .dockerignore empty.config
 
-EXTRA := extra/Config.in extra/external.mk \
-	extra/package/bindfs/Config.in extra/package/bindfs/bindfs.mk \
-	extra/package/criu/Config.in extra/package/criu/criu.mk \
-	extra/package/criu/0001-Remove-quotes-around-CC-for-buildroot.patch \
-	extra/package/criu/0002-Add-quotes-around-HOSTCC-and-HOSTLD-for-buildroot.patch \
-	extra/package/ipvsadm/Config.in extra/package/ipvsadm/ipvsadm.mk \
-	extra/package/su-exec/Config.in extra/package/su-exec/su-exec.mk
+EXTRA := $(shell find extra -type f)
 
 build: Dockerfile $(SOURCES) $(EXTRA)
 	find . -type f -name '.DS_Store' | xargs rm -f
@@ -44,28 +38,20 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := libstdcxx bindfs criu git ipvsadm libfuse sshfs su-exec tzdata vim
+PACKAGES := bindfs criu git ipvsadm libfuse sshfs su-exec tzdata vim
 
-IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
+IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
 TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default
 
-packages: $(PACKAGES)
+packages: libstdcxx $(PACKAGES)
 
-$(PACKAGES): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+libstdcxx $(PACKAGES): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
 
 output/$(VERSION)/barge-pkg-libstdcxx-$(VERSION).tar.gz: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
 
-output/$(VERSION)/barge-pkg-bindfs-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-criu-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-git-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-ipvsadm-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-libfuse-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-sshfs-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-su-exec-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-tzdata-$(VERSION).tar.gz \
-output/$(VERSION)/barge-pkg-vim-$(VERSION).tar.gz: \
+$(PACKAGES:%=output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz): \
 	output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz: | output
 	$(eval TMP_DIR=/tmp/barge-pkg-$*-$(VERSION))
 	vagrant ssh -c 'set -e; \
@@ -81,9 +67,9 @@ output/$(VERSION)/barge-pkg-vim-$(VERSION).tar.gz: \
 		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
 
 output:
-	mkdir -p $@/$(VERSION)
+	@mkdir -p $@/$(VERSION)
 
 distclean:
 	$(RM) -r output
 
-.PHONY: config packages $(PACKAGES) output distclean
+.PHONY: config packages libstdcxx $(PACKAGES) output distclean
