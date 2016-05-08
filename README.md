@@ -26,6 +26,32 @@ List files and directroies in `/opt/pkg/<version>/barge-pkg-<package-name>-<vers
 
 List `/opt/pkg/<version>/barge-pkg-*-<version>.tar.gz` you have locally.
 
+## Notes
+
+- It installs files in a package onto the root filesystem in RAM disk, so you have to install the pachage at each boot.
+- But once a package is built, installed or downloaded succesfully, it is stored at `/opt/pkg` for the future installation. In most of Barge distribution, `/opt` is persistent.
+- You may need `[build options]` to build a package properly. Please refer to the makefile of the package in Buildroot.  
+  e.g., https://git.busybox.net/buildroot/tree/package/git/git.mk
+
+
+## Customising
+
+You can use your own resources to install/build packages by creating/editing the configuration file `/etc/default/pkg` as below.
+
+```bash
+[bargee@barge ~]$ cat /etc/default/pkg
+# Docker image to build a package
+# BUILDER="ailispaw/barge-pkg"
+
+# Folder to store built packages locally
+# PKG_DIR="/opt/pkg"
+
+# URL of a package repository to store pre-built packages
+# PKG_URL="https://github.com/bargees/barge-pkg/releases/download"
+```
+
+Note: `<VERSION>` from `/etc/os-release` will append to these values as a tag(`:<VERSION>`) / a subdirectory(`/<VERSION>`).
+
 ## Examples
 
 ### GNU tar
@@ -56,13 +82,6 @@ Installing...
 barge-pkg-tar-2.0.0 has been installed into the system.
 ```
 
-### git
-
-```bash
-[bargee@barge ~]$ sudo pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
-[bargee@barge ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
-```
-
 ### perl
 
 ```bash
@@ -76,22 +95,39 @@ barge-pkg-tar-2.0.0 has been installed into the system.
 [bargee@barge ~]$ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 ```
 
-### CRIU
+## Pre-built Packages
+
+`*` marked package is an extra package which is not included in Buildroot.
+
+### bindfs*
+
+http://bindfs.org/
+
+```bash
+[bargee@barge ~]$ sudo pkg install bindfs
+```
+
+### CRIU*
+
+https://github.com/xemul/criu
 
 ```bash
 [bargee@barge ~]$ sudo pkg install criu
 ```
 
-### ipvsadm
+### git
+
+```bash
+[bargee@barge ~]$ sudo pkg install git -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
+[bargee@barge ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
+```
+
+### ipvsadm*
+
+http://kb.linuxvirtualserver.org/wiki/Ipvsadm
 
 ```bash
 [bargee@barge ~]$ sudo pkg install ipvsadm -e BR2_PACKAGE_LIBNL=y
-```
-
-### vim
-
-```bash
-[bargee@barge ~]$ sudo pkg install vim
 ```
 
 ### libfuse
@@ -100,10 +136,26 @@ barge-pkg-tar-2.0.0 has been installed into the system.
 [bargee@barge ~]$ sudo pkg install libfuse
 ```
 
+### libstdc++*
+
+```bash
+[bargee@barge ~]$ sudo pkg install libstdcxx
+```
+
+Note: It's a special package which can not be built locally.
+
 ### SSHFS
 
 ```bash
 [bargee@barge ~]$ sudo pkg install sshfs
+```
+
+### su-exec*
+
+https://github.com/ncopa/su-exec
+
+```bash
+[bargee@barge ~]$ sudo pkg install su-exec
 ```
 
 ### tzdata
@@ -129,8 +181,9 @@ Etc/UTC
 Wed Apr 27 00:48:41 UTC 2016
 ```
 
-### bindfs
+### vim
 
 ```bash
-[bargee@barge ~]$ sudo pkg install bindfs
+[bargee@barge ~]$ sudo pkg install vim
 ```
+
