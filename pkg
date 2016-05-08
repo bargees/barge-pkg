@@ -2,9 +2,17 @@
 
 source /etc/os-release
 
-BUILDER=ailispaw/barge-pkg:${VERSION}
-PKG_DIR=/opt/pkg/${VERSION}
-PKG_URL=https://github.com/bargees/barge-pkg/releases/download/${VERSION}
+if [ -f /etc/default/pkg ]; then
+  source /etc/default/pkg
+fi
+
+: ${BUILDER:="ailispaw/barge-pkg"}
+: ${PKG_DIR:="/opt/pkg"}
+: ${PKG_URL:="https://github.com/bargees/barge-pkg/releases/download"}
+
+BUILDER="${BUILDER}:${VERSION}"
+PKG_DIR="${PKG_DIR}/${VERSION}"
+PKG_URL="${PKG_URL}/${VERSION}"
 
 usage() {
   echo "Usage: $(basename $0) {build|install} [-f] <package-name> [build options]" >&2
