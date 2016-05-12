@@ -22,8 +22,10 @@ endef
 build: Dockerfile $(SOURCES) $(EXTRA)
 	$(call docker_build,$<,$(BUILDER),$^)
 
-release: | build
+tag: | build
 	docker tag -f $(BUILDER) $(BUILDER):$(VERSION)
+
+release: | tag
 	docker push $(BUILDER):$(VERSION)
 
 extra: Dockerfile.extra $(EXTRA)
@@ -36,7 +38,7 @@ clean:
 	-docker rmi $(BUILDER):$(VERSION)
 	-docker rmi $(BUILDER)
 
-.PHONY: build release base extra vagrant clean
+.PHONY: build tag release base extra vagrant clean
 
 config: output/$(VERSION)/buildroot.config
 
