@@ -144,6 +144,19 @@ http://kb.linuxvirtualserver.org/wiki/Ipvsadm
 
 Note: It's a special package which can not be built locally.
 
+### locales*
+
+```bash
+[bargee@barge ~]$ sudo pkg install locales
+[bargee@barge ~]$ sudo localedef -i ja_JP -f UTF-8 ja_JP.UTF-8
+[bargee@barge ~]$ locale -a
+C
+C.UTF-8
+POSIX
+ja_JP.utf8
+[bargee@barge ~]$ export LANG=ja_JP.UTF-8
+```
+
 ### SSHFS
 
 ```bash
