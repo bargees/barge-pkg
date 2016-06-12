@@ -163,6 +163,14 @@ ja_JP.utf8
 [bargee@barge ~]$ export LANG=ja_JP.UTF-8
 ```
 
+### shadow*
+
+http://pkg-shadow.alioth.debian.org/
+
+```bash
+[bargee@barge ~]$ sudo pkg install shadow
+```
+
 ### SSHFS
 
 ```bash
