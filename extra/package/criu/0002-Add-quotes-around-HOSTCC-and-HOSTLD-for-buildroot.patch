@@ -1,4 +1,4 @@
-From e4a2b4d2ca0f852ecc95306933d6b2141c9adcd8 Mon Sep 17 00:00:00 2001
+From e7bda650207f5b0495864d1d99ab7bb592780cf8 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Wed, 20 Apr 2016 12:56:27 -0700
 Subject: [PATCH 2/2] Add quotes around $(HOSTCC) and $(HOSTLD) for buildroot
@@ -8,10 +8,10 @@ Subject: [PATCH 2/2] Add quotes around $(HOSTCC) and $(HOSTLD) for buildroot
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/criu/Makefile b/criu/Makefile
-index f2fa9b4..a9a53e2 100644
+index 91dff64..a1602da 100644
 --- a/criu/Makefile
 +++ b/criu/Makefile
-@@ -149,7 +149,7 @@ ifeq ($(piegen-y),y)
+@@ -104,7 +104,7 @@ ifeq ($(piegen-y),y)
  piegen-bin		:= pie/piegen/piegen
  
  pie/piegen/%: config

@@ -1,4 +1,4 @@
-From 453023690c48e51263a04ab365cc0073d90d41ca Mon Sep 17 00:00:00 2001
+From fa2e4244474220f69e963f0b9e583fd039c33ee8 Mon Sep 17 00:00:00 2001
 From: "A.I" <ailis@paw.zone>
 Date: Thu, 10 Mar 2016 14:53:52 +0900
 Subject: [PATCH 1/2] Remove quotes around $(CC) for buildroot
@@ -8,10 +8,10 @@ Subject: [PATCH 1/2] Remove quotes around $(CC) for buildroot
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/criu/Makefile b/criu/Makefile
-index b696c63..f2fa9b4 100644
+index 6f3da08..91dff64 100644
 --- a/criu/Makefile
 +++ b/criu/Makefile
-@@ -89,7 +89,7 @@ ifneq ($(MAKECMDGOALS),mrproper)
+@@ -48,7 +48,7 @@ ifneq ($(MAKECMDGOALS),mrproper)
          ifneq ($(shell sh -c                                                            \
                          'TMP="$(OUTPUT)$(TMPOUT).$$$$";                                 \
                          echo "int main(int argc, char *argv[]) { return 0; }" |         \
