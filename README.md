@@ -115,6 +115,12 @@ https://github.com/xemul/criu
 [bargee@barge ~]$ sudo pkg install criu
 ```
 
+### eudev
+
+```bash
+[bargee@barge ~]$ sudo pkg install eudev
+```
+
 ### git
 
 ```bash
