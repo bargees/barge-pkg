@@ -128,6 +128,12 @@ https://github.com/xemul/criu
 [bargee@barge ~]$ git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 ```
 
+### iproute2
+
+```bash
+[bargee@barge ~]$ sudo pkg install iproute2
+```
+
 ### ipvsadm*
 
 http://kb.linuxvirtualserver.org/wiki/Ipvsadm
