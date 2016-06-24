@@ -1,0 +1,8 @@
+config BR2_PACKAGE_SHADOW
+	bool "shadow"
+	help
+	  The shadow-utils package includes the necessary programs for
+	  converting UNIX password files to the shadow password format, plus
+	  programs for managing user and group accounts.
+
+	  http://pkg-shadow.alioth.debian.org/
