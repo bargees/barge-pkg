@@ -7,5 +7,5 @@ config BR2_PACKAGE_IPVSADM
 	  http://kb.linuxvirtualserver.org/wiki/Ipvsadm
 	  https://kernel.org/pub/linux/utils/kernel/ipvsadm/
 
-comment "ipvsadm needs an (e)glibc toolchain"
+comment "ipvsadm needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
