@@ -99,6 +99,12 @@ barge-pkg-tar-2.0.0 has been installed into the system.
 
 `*` marked package is an extra package which is not included in Buildroot.
 
+### ACL
+
+```bash
+[bargee@barge ~]$ sudo pkg install acl
+```
+
 ### bindfs*
 
 http://bindfs.org/
@@ -189,6 +195,12 @@ https://github.com/ncopa/su-exec
 
 ```bash
 [bargee@barge ~]$ sudo pkg install su-exec
+```
+
+### Tar
+
+```bash
+[bargee@barge ~]$ sudo pkg install tar
 ```
 
 ### tzdata
