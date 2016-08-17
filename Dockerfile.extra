@@ -1,6 +1,7 @@
 FROM ailispaw/barge-pkg
 
-# Copy extra packages
+# Update extra packages
+RUN rm -rf ${SRC_DIR}/extra/*
 COPY extra ${SRC_DIR}/extra
 
 RUN make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig
