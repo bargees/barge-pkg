@@ -1,5 +1,5 @@
 BUILDER := ailispaw/barge-pkg
-VERSION := 2.1.10
+VERSION := 2.1.11
 
 SOURCES := .dockerignore empty.config
 
