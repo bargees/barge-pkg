@@ -10,5 +10,5 @@ config BR2_PACKAGE_CRIU
 
 	  https://criu.org/
 
-comment "criu needs an (e)glibc toolchain"
+comment "criu needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

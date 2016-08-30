@@ -7,5 +7,5 @@ config BR2_PACKAGE_SU_EXEC
 	  https://github.com/ncopa/su-exec
 	  https://github.com/tianon/gosu
 
-comment "su-exec needs an (e)glibc toolchain"
+comment "su-exec needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
