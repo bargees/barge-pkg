@@ -6,5 +6,5 @@ config BR2_PACKAGE_LOCALES
 
 	  https://sourceware.org/glibc/wiki/Locales
 
-comment "locales needs an (e)glibc toolchain"
+comment "locales needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
