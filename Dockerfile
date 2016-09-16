@@ -4,7 +4,7 @@ ENV TERM xterm
 
 RUN apt-get -q update && \
     apt-get -q -y install --no-install-recommends ca-certificates \
-      bc build-essential cpio file python unzip rsync wget && \
+      bc build-essential cpio file git python unzip rsync wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Setup environment
@@ -15,6 +15,12 @@ RUN mkdir -p ${SRC_DIR}
 ENV BR_VERSION 2016.08
 RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
     mv buildroot-${BR_VERSION} ${BR_ROOT}
+
+# Apply patches
+COPY patches ${SRC_DIR}/patches
+RUN for patch in ${SRC_DIR}/patches/*.patch; do \
+      patch -p1 -d ${BR_ROOT} < ${patch}; \
+    done
 
 # Copy the empty config file
 COPY empty.config ${BR_ROOT}/.config
