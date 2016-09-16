@@ -9,8 +9,8 @@ module VagrantPlugins
 end
 
 Vagrant.configure(2) do |config|
-  config.vm.define "barge-pkg", primary: true
-  config.vm.define "barge-pkg-armhf", autostart: false
+  config.vm.define "barge-pkg", autostart: false
+  config.vm.define "barge-pkg-armhf", primary: true
 
   config.vm.box = "ailispaw/barge"
 
