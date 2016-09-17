@@ -10,17 +10,30 @@ CRIU_DEPENDENCIES = host-libcap protobuf-c libnl iproute2 tar
 CRIU_LICENSE = GPLv2 (programs), LGPLv2.1 (libraries)
 CRIU_LICENSE_FILES = COPYING
 
-CRIU_CFLAGS = $(HOST_CFLAGS) --sysroot=$(STAGING_DIR) -I$(STAGING_DIR)/usr/include/libnl3
-CRIU_MAKE_OPTS = PREFIX=/usr CC="$(HOSTCC) $(CRIU_CFLAGS) $(HOST_LDFLAGS)" AR="$(HOSTAR)"
+CRIU_MAKE_ENV = $(TARGET_MAKE_ENV)
+CRIU_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3 -I$(HOST_DIR)/usr/include
+
+ifneq ($(BR2_x86_64),y)
+CRIU_MAKE_ENV += ARCH=$(BR2_ARCH) CROSS_COMPILE="$(TARGET_CROSS)"
+endif
+ifeq ($(BR2_arm),y)
+ifeq ($(BR2_ARM_CPU_ARMV6),y)
+CRIU_CFLAGS += -march=armv6
+else ifeq ($(BR2_ARM_CPU_ARMV7A),y)
+CRIU_CFLAGS += -march=armv7-a
+endif
+endif
+
+CRIU_MAKE_OPTS = PREFIX=/usr CC="$(TARGET_CC) $(CRIU_CFLAGS) $(TARGET_LDFLAGS)"
 
 define CRIU_BUILD_CMDS
 	$(RM) $(@D)/images/google/protobuf/descriptor.proto
 	cp $(HOST_DIR)/usr/include/google/protobuf/descriptor.proto $(@D)/images/google/protobuf/
-	$(TARGET_MAKE_ENV) $(MAKE1) $(CRIU_MAKE_OPTS) -C $(@D) criu
+	$(CRIU_MAKE_ENV) $(MAKE1) $(CRIU_MAKE_OPTS) -C $(@D) criu
 endef
 
 define CRIU_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) $(CRIU_MAKE_OPTS) -C $(@D) DESTDIR=$(TARGET_DIR) install-criu
+	$(CRIU_MAKE_ENV) $(MAKE1) $(CRIU_MAKE_OPTS) -C $(@D) DESTDIR=$(TARGET_DIR) install-criu
 endef
 
 $(eval $(generic-package))
