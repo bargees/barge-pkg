@@ -45,14 +45,20 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := acl bindfs criu git iproute2 ipvsadm libfuse locales make \
-	shadow singularity sshfs su-exec tar tmux tzdata vim
+PACKAGES := acl alsa-utils bindfs criu file git i2c-tools iproute2 ipvsadm libcap libcgroup \
+	libfuse locales make mjpg-streamer shadow singularity sshfs su-exec tar tmux tzdata vim
 
-GIT_OPTIONS         := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
-IPVSADM_OPTIONS     := -e BR2_PACKAGE_LIBNL=y
-SINGULARITY_OPTIONS := -e BR2_SHARED_STATIC_LIBS=y
-TMUX_OPTIONS        := -e BR2_PACKAGE_NCURSES_WCHAR=y
-TZDATA_OPTIONS      := -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
+ALSA_UTILS_OPTIONS    := -e BR2_PACKAGE_ALSA_UTILS_AMIXER=y -e BR2_PACKAGE_ALSA_UTILS_APLAY=y  \
+	-e BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST=y -e BR2_PACKAGE_ALSA_UTILS_ALSACONF=y
+GIT_OPTIONS           := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
+IPVSADM_OPTIONS       := -e BR2_PACKAGE_LIBNL=y
+SINGULARITY_OPTIONS   := -e BR2_SHARED_STATIC_LIBS=y
+LIBCAP_OPTIONS        := -e BR2_PACKAGE_LIBCAP_TOOLS=y
+LIBCGROUP_OPTIONS     := -e BR2_PACKAGE_LIBCGROUP_TOOLS=y
+MJPG_STREAMER_OPTIONS := -e BR2_PACKAGE_LIBV4L=y -e BR2_PACKAGE_JPEG=y -e BR2_PACKAGE_LIBJPEG=y \
+	-e BR2_PACKAGE_HAS_JPEG=y -e BR2_PACKAGE_PROVIDES_JPEG="libjpeg"
+TMUX_OPTIONS          := -e BR2_PACKAGE_NCURSES_WCHAR=y
+TZDATA_OPTIONS        := -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
 
 packages: libstdcxx $(PACKAGES)
 
