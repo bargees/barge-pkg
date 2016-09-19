@@ -70,7 +70,7 @@ $(PACKAGES:%=output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz): \
 		sudo mkdir -p /opt/pkg/ccache /opt/pkg/dl && \
 		docker run --rm -v $(TMP_DIR):/build/buildroot/output/target \
 			-v /opt/pkg/ccache:/build/buildroot/ccache -v /opt/pkg/dl:/build/buildroot/dl \
-			$($(shell echo $* | tr a-z A-Z)_OPTIONS) \
+			$($(shell echo $* | tr a-z- A-Z_)_OPTIONS) \
 			$(BUILDER):$(VERSION) make --quiet $*; \
 		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
 
