@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BINDFS_VERSION = 1.13.2
+BINDFS_VERSION = 1.13.3
 BINDFS_SOURCE = bindfs-$(BINDFS_VERSION).tar.gz
 BINDFS_SITE = http://bindfs.org/downloads
 BINDFS_DEPENDENCIES = host-pkgconf libfuse
