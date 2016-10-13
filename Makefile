@@ -45,8 +45,8 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := acl bindfs bluez5_utils criu eudev file git iproute2 ipvsadm libcap libcgroup libfuse \
-	locales make mjpg-streamer nodejs shadow sshfs su-exec tar tzdata vim
+PACKAGES := acl bindfs bluez5_utils criu eudev file git i2c-tools iproute2 ipvsadm libcap libcgroup \
+	libfuse locales make mjpg-streamer nodejs shadow sshfs su-exec tar tzdata vim
 
 BLUEZ5_UTILS_OPTIONS := -e BR2_PACKAGE_BLUEZ5_UTILS_CLIENT=y -e BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL=y
 GIT_OPTIONS       := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
