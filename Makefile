@@ -45,11 +45,13 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := acl alsa-utils bindfs criu file git i2c-tools iproute2 ipvsadm libcap libcgroup \
-	libfuse locales make mjpg-streamer shadow singularity sshfs su-exec tar tmux tzdata vim
+PACKAGES := acl alsa-utils bindfs bluez5_utils criu file git i2c-tools iproute2 ipvsadm \
+	libcap libcgroup libfuse locales make mjpg-streamer shadow singularity sshfs su-exec tar tmux \
+	tzdata vim
 
 ALSA_UTILS_OPTIONS := -e BR2_PACKAGE_ALSA_UTILS_AMIXER=y -e BR2_PACKAGE_ALSA_UTILS_APLAY=y  \
 	-e BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST=y -e BR2_PACKAGE_ALSA_UTILS_ALSACONF=y
+BLUEZ5_UTILS_OPTIONS := -e BR2_PACKAGE_BLUEZ5_UTILS_CLIENT=y -e BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED=y
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
 SINGULARITY_OPTIONS := -e BR2_SHARED_STATIC_LIBS=y
