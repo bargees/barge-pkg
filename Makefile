@@ -50,6 +50,7 @@ PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm libfuse locales make \
 
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
+SSHFS_OPTIONS   := -e BR2_PACKAGE_UTIL_LINUX_LIBMOUNT=y -e BR2_PACKAGE_UTIL_LINUX_LIBBLKID=y
 TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default
 
 packages: libstdcxx $(PACKAGES)
