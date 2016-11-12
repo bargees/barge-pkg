@@ -50,8 +50,6 @@ PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm libfuse locales make \
 
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
-SSHFS_OPTIONS   := -e BR2_PACKAGE_UTIL_LINUX_LIBMOUNT=y -e BR2_PACKAGE_UTIL_LINUX_LIBBLKID=y \
-	-e BR2_PACKAGE_UTIL_LINUX_LIBUUID=y
 TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default
 
 packages: libstdcxx $(PACKAGES)
@@ -73,7 +71,13 @@ $(PACKAGES:%=output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz): \
 		docker run --rm -v $(TMP_DIR):/build/buildroot/output/target \
 			-v /opt/pkg/ccache:/build/buildroot/ccache -v /opt/pkg/dl:/build/buildroot/dl \
 			$($(shell echo $* | tr a-z- A-Z_)_OPTIONS) \
-			$(BUILDER):$(VERSION) make --quiet $*; \
+			$(BUILDER):$(VERSION) sh -c " \
+				cp .config .config.org && \
+				echo BR2_PACKAGE_$(shell echo $* | tr a-z- A-Z_)=y >> .config && \
+				make oldconfig >>/dev/null 2>&1 && \
+				diff .config .config.org || true && \
+				make --quiet $* \
+			"; \
 		sudo tar -zc -f /vagrant/$@ -C $(TMP_DIR) .' -- -T
 
 output:
