@@ -6,7 +6,7 @@
 
 SHADOW_VERSION = 4.2.1
 SHADOW_SOURCE = shadow-$(SHADOW_VERSION).tar.xz
-SHADOW_SITE = http://pkg-shadow.alioth.debian.org/releases/
+SHADOW_SITE = http://pkg-shadow.alioth.debian.org/releases
 SHADOW_LICENSE = BSD-3c
 SHADOW_LICENSE_FILES = COPYING
 SHADOW_DEPENDENCIES = acl attr #busybox, because barge has busybox.
