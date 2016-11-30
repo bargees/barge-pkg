@@ -23,7 +23,7 @@ build: Dockerfile $(SOURCES) $(EXTRA)
 	$(call docker_build,$<,$(BUILDER),$^)
 
 tag: | build
-	docker tag -f $(BUILDER) $(BUILDER):$(VERSION)
+	docker tag $(BUILDER) $(BUILDER):$(VERSION)
 
 release: | tag
 	docker push $(BUILDER):$(VERSION)
