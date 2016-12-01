@@ -1,5 +1,5 @@
 BUILDER := ailispaw/barge-pkg
-VERSION := 2.2.7
+VERSION := 2.3.0-rc3
 
 SOURCES := .dockerignore empty.config
 
@@ -23,7 +23,7 @@ build: Dockerfile $(SOURCES) $(EXTRA)
 	$(call docker_build,$<,$(BUILDER),$^)
 
 tag: | build
-	docker tag -f $(BUILDER) $(BUILDER):$(VERSION)
+	docker tag $(BUILDER) $(BUILDER):$(VERSION)
 
 release: | tag
 	docker push $(BUILDER):$(VERSION)
