@@ -1,5 +1,5 @@
 BUILDER := ailispaw/barge-pkg
-VERSION := 2.3.4
+VERSION := 2.3.4-armhf
 
 SOURCES := .dockerignore empty.config
 
