@@ -75,7 +75,7 @@ $(PACKAGES:%=output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz): \
 				cp .config .config.org && \
 				echo BR2_PACKAGE_$(shell echo $* | tr a-z- A-Z_)=y >> .config && \
 				env | grep ^BR2_ >> .config && \
-				make oldconfig >>/dev/null 2>&1 && \
+				make oldconfig || make oldconfig && \
 				diff .config .config.org || true && \
 				make --quiet $* \
 			"; \
