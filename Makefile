@@ -46,7 +46,7 @@ output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
 PACKAGES := acl alsa-utils bindfs bluez5_utils criu eudev file git i2c-tools iproute2 ipvsadm \
-	libcap libcgroup libfuse locales make mjpg-streamer nodejs shadow sshfs su-exec tar tzdata vim
+	libcap libcgroup libfuse locales make mjpg-streamer shadow sshfs su-exec tar tzdata vim
 
 ALSA_UTILS_OPTIONS := -e BR2_PACKAGE_ALSA_UTILS_AMIXER=y -e BR2_PACKAGE_ALSA_UTILS_APLAY=y  \
 	-e BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST=y -e BR2_PACKAGE_ALSA_UTILS_ALSACONF=y
@@ -57,8 +57,6 @@ LIBCAP_OPTIONS    := -e BR2_PACKAGE_LIBCAP_TOOLS=y
 LIBCGROUP_OPTIONS := -e BR2_PACKAGE_LIBCGROUP_TOOLS=y
 MJPG_STREAMER_OPTIONS := -e BR2_PACKAGE_LIBV4L=y -e BR2_PACKAGE_JPEG=y -e BR2_PACKAGE_LIBJPEG=y \
 	-e BR2_PACKAGE_HAS_JPEG=y -e BR2_PACKAGE_PROVIDES_JPEG="libjpeg"
-NODEJS_OPTIONS    := -e BR2_PACKAGE_NODEJS_VERSION_STRING="0.10.45" -e BR2_PACKAGE_NODEJS_NPM=y \
-	-e BR2_PACKAGE_OPENSSL=y
 TZDATA_OPTIONS    := -e BR2_TARGET_TZ_ZONELIST=default
 
 packages: libstdcxx $(PACKAGES)
