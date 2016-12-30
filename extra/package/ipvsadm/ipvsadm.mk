@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPVSADM_VERSION = 1.28
+IPVSADM_VERSION = 1.29
 IPVSADM_SOURCE = ipvsadm-$(IPVSADM_VERSION).tar.gz
 IPVSADM_SITE = https://kernel.org/pub/linux/utils/kernel/ipvsadm
 IPVSADM_DEPENDENCIES = host-pkgconf host-popt popt
