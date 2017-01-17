@@ -6,8 +6,9 @@ config BR2_PACKAGE_CRIU
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_PROTOBUF_C
 	select BR2_PACKAGE_LIBNL
-	select BR2_PACKAGE_TAR
+	select BR2_PACKAGE_LIBNET
 	select BR2_PACKAGE_IPROUTE2
+	select BR2_PACKAGE_TAR
 	help
 	  Checkpoint/Restore In Userspace
 
