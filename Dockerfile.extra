@@ -1,7 +1,14 @@
 FROM ailispaw/barge-pkg
 
+# Setup environment
+ENV SRC_DIR=/build
+
 # Update extra packages
 RUN rm -rf ${SRC_DIR}/extra/*
 COPY extra ${SRC_DIR}/extra
 
-RUN make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig
+VOLUME ${BR_ROOT}/dl ${BR_ROOT}/ccache
+
+WORKDIR ${BR_ROOT}
+
+CMD ["make", "BR2_EXTERNAL=${SRC_DIR}/extra", "oldconfig"]
