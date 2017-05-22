@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CRIU_VERSION = v3.0
+CRIU_VERSION = v3.1
 CRIU_SITE = $(call github,xemul,criu,$(CRIU_VERSION))
 CRIU_DEPENDENCIES = host-libcap protobuf-c libnl libnet iproute2 tar
 CRIU_LICENSE = GPLv2 (programs), LGPLv2.1 (libraries)
