@@ -33,7 +33,7 @@ CRIU_MAKE_OPTS = PREFIX=/usr CC="$(TARGET_CC) $(CRIU_CFLAGS) $(TARGET_LDFLAGS)" 
 
 define CRIU_BUILD_CMDS
 	$(RM) $(@D)/images/google/protobuf/descriptor.proto
-	cp $(HOST_DIR)/usr/include/google/protobuf/descriptor.proto $(@D)/images/google/protobuf/
+	cp $(HOST_DIR)/include/google/protobuf/descriptor.proto $(@D)/images/google/protobuf/
 	$(CRIU_MAKE_ENV) $(MAKE1) $(CRIU_MAKE_OPTS) -C $(@D) criu
 endef
 
