@@ -214,7 +214,7 @@ https://github.com/ncopa/su-exec
 To change timezone;
 
 ```bash
-[bargee@barge ~]$ sudo pkg install tzdata -e BR2_TARGET_TZ_ZONELIST=default
+[bargee@barge ~]$ sudo pkg install tzdata -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
 [bargee@barge ~]$ echo 'Europe/Paris' | sudo tee /etc/timezone
 Europe/Paris
 [bargee@barge ~]$ sudo cp -L /usr/share/zoneinfo/Europe/Paris /etc/localtime
