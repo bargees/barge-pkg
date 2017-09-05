@@ -45,7 +45,7 @@ config: output/$(VERSION)/buildroot.config
 output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
-PACKAGES := acl bindfs criu git iproute2 ipvsadm libfuse locales make \
+PACKAGES := acl bindfs git iproute2 ipvsadm libfuse locales make \
 	shadow sshfs su-exec tar tmux tzdata vim
 
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y

@@ -1,5 +1,4 @@
 source "$BR2_EXTERNAL_BARGE_PKG_PATH/package/bindfs/Config.in"
-source "$BR2_EXTERNAL_BARGE_PKG_PATH/package/criu/Config.in"
 source "$BR2_EXTERNAL_BARGE_PKG_PATH/package/ipvsadm/Config.in"
 source "$BR2_EXTERNAL_BARGE_PKG_PATH/package/locales/Config.in"
 source "$BR2_EXTERNAL_BARGE_PKG_PATH/package/shadow/Config.in"
