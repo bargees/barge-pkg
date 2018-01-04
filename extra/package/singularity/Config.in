@@ -1,0 +1,19 @@
+config BR2_PACKAGE_SINGULARITY
+	bool "singularity"
+	depends on BR2_SHARED_STATIC_LIBS
+	select BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_BZIP2
+	select BR2_PACKAGE_PYTHON_SSL
+	select BR2_PACKAGE_PYTHON_ZLIB
+	select BR2_PACKAGE_PYTHON_HASHLIB
+	select BR2_PACKAGE_CA_CERTIFICATES
+	select BR2_PACKAGE_SQUASHFS
+	select BR2_PACKAGE_GETENT
+	select BR2_PACKAGE_TAR
+	help
+	  Application containers for Linux
+
+	  https://github.com/singularityware/singularity
+
+comment "singularity needs both shared and static libraries to build"
+	depends on !BR2_SHARED_STATIC_LIBS

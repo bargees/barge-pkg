@@ -46,10 +46,11 @@ output/$(VERSION)/buildroot.config: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/buildroot/.config > $@
 
 PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm libfuse locales make \
-	shadow sshfs su-exec tar tmux tzdata vim
+	shadow singularity sshfs su-exec tar tmux tzdata vim
 
 GIT_OPTIONS     := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
 IPVSADM_OPTIONS := -e BR2_PACKAGE_LIBNL=y
+SINGULARITY_OPTIONS := -e BR2_SHARED_STATIC_LIBS=y
 TMUX_OPTIONS    := -e BR2_PACKAGE_NCURSES_WCHAR=y
 TZDATA_OPTIONS  := -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
 
