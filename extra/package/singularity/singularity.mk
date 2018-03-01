@@ -10,7 +10,7 @@ SINGULARITY_SITE = https://github.com/singularityware/singularity/releases/downl
 SINGULARITY_LICENSE = BSD-3-Clause
 SINGULARITY_LICENSE_FILES = LICENSE.md
 
-SINGULARITY_DEPENDENCIES = python ca-certificates squashfs getent tar
+SINGULARITY_DEPENDENCIES = python ca-certificates squashfs getent tar libcurl file
 
 SINGULARITY_MAKE = $(MAKE1)
 

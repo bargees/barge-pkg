@@ -10,6 +10,10 @@ config BR2_PACKAGE_SINGULARITY
 	select BR2_PACKAGE_SQUASHFS
 	select BR2_PACKAGE_GETENT
 	select BR2_PACKAGE_TAR
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_CURL
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_FILE
 	help
 	  Application containers for Linux
 
