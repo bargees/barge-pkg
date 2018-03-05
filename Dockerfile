@@ -12,7 +12,7 @@ ENV SRC_DIR=/build \
     BR_ROOT=/build/buildroot
 RUN mkdir -p ${SRC_DIR}
 
-ENV BR_VERSION 2018.02-rc3
+ENV BR_VERSION 2018.02
 RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
     mv buildroot-${BR_VERSION} ${BR_ROOT}
 
@@ -30,8 +30,7 @@ COPY extra ${SRC_DIR}/extra
 
 WORKDIR ${BR_ROOT}
 
-RUN sed -e 's/utf8/utf-8/' -i support/dependencies/dependencies.sh && \
-    make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig && \
+RUN make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig && \
     make --quiet && \
     find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf && \
     find output/target/ -name 'libstdc++.so*' | tar zcf ${SRC_DIR}/libstdcxx.tar.gz --transform 's?output/target?.?g' -T - && \
