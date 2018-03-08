@@ -22,7 +22,7 @@ ifeq ($(BR2_arm),y)
 ifeq ($(BR2_ARM_CPU_ARMV6),y)
 CRIU_CFLAGS += -march=armv6
 CRIU_HOSTCFLAGS = -DCONFIG_ARMV6 -DNO_RELOCS
-else ifeq ($(BR2_ARM_CPU_ARMV7A),y)
+else ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_ARM_CPU_ARMV8A),y)
 CRIU_CFLAGS += -march=armv7-a
 CRIU_HOSTCFLAGS = -DCONFIG_ARMV7 -DNO_RELOCS
 endif
