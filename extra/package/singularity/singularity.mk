@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SINGULARITY_VERSION = 2.4.4
+SINGULARITY_VERSION = 2.4.5
 SINGULARITY_SOURCE = singularity-$(SINGULARITY_VERSION).tar.gz
 SINGULARITY_SITE = https://github.com/singularityware/singularity/releases/download/$(SINGULARITY_VERSION)
 SINGULARITY_LICENSE = BSD-3-Clause
