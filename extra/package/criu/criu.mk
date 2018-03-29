@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CRIU_VERSION = v3.8
+CRIU_VERSION = v3.8.1
 CRIU_SITE = $(call github,checkpoint-restore,criu,$(CRIU_VERSION))
 CRIU_DEPENDENCIES = libcap protobuf-c libnl libnet iproute2 tar
 CRIU_LICENSE = GPLv2 (programs), LGPLv2.1 (libraries)
