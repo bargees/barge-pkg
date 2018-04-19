@@ -51,7 +51,7 @@ build() {
     mkdir -p ${TMP_DIR}/$i
   done
 
-  docker run --rm -v ${TMP_DIR}:${TARGET_DIR} ${OPTIONS} ${BUILDER} sh -c " \
+  docker run --rm -v ${TMP_DIR}:${TARGET_DIR} "${OPTIONS[@]}" ${BUILDER} sh -c " \
     echo BR2_PACKAGE_$(echo ${PACKAGE} | tr a-z- A-Z_)=y >> .config && \
     (env | grep ^BR2_ >> .config || true) && \
     (make oldconfig >/dev/null 2>&1 || make oldconfig >/dev/null 2>&1) && \
@@ -99,7 +99,7 @@ if [ "${COMMAND}" = "show" ]; then
 fi
 
 shift
-OPTIONS=$*
+OPTIONS=("$@")
 
 if [ "$(id -u)" != "0" ]; then
   echo "$(basename $0): Operation not permitted, must be root." >&2
