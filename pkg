@@ -52,9 +52,11 @@ build() {
   done
 
   docker run --rm -v ${TMP_DIR}:${TARGET_DIR} "${OPTIONS[@]}" ${BUILDER} sh -c " \
+    cp .config .config.org && \
     echo BR2_PACKAGE_$(echo ${PACKAGE} | tr a-z- A-Z_)=y >> .config && \
     (env | grep ^BR2_ >> .config || true) && \
     (make oldconfig >/dev/null 2>&1 || make oldconfig >/dev/null 2>&1) && \
+    (diff .config .config.org || true) && \
     make --quiet ${PACKAGE} \
   "
 
