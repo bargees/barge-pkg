@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SINGULARITY_VERSION = 2.5.1
+SINGULARITY_VERSION = 2.5.2
 SINGULARITY_SITE = $(call github,singularityware,singularity,$(SINGULARITY_VERSION))
 SINGULARITY_LICENSE = BSD-3-Clause
 SINGULARITY_LICENSE_FILES = LICENSE.md
