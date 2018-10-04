@@ -1,6 +1,8 @@
 BUILDER := ailispaw/barge-pkg
 VERSION := 2.10.0
 
+KERNEL_VERSION := 4.14.74
+
 SOURCES := .dockerignore empty.config
 
 EXTRA := $(shell find extra -type f)
@@ -47,7 +49,7 @@ output/$(VERSION)/buildroot.config: | output
 
 PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm libfuse locales make \
 	shadow singularity sshfs su-exec tar tmux tzdata vim \
-	dmidecode findutils socat zlib
+	dmidecode findutils socat zlib wireguard
 
 EUDEV_OPTIONS       := -e BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
 GIT_OPTIONS         := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
@@ -55,10 +57,27 @@ IPVSADM_OPTIONS     := -e BR2_PACKAGE_LIBNL=y
 SINGULARITY_OPTIONS := -e BR2_SHARED_STATIC_LIBS=y
 TMUX_OPTIONS        := -e BR2_PACKAGE_NCURSES_WCHAR=y
 TZDATA_OPTIONS      := -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
+WIREGUARD_OPTIONS   := -v /vagrant/output/$(VERSION)/kernel.config:/build/kernel.config \
+	-e BR2_LINUX_KERNEL=y \
+	-e BR2_LINUX_KERNEL_CUSTOM_VERSION=y \
+	-e BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\"$(KERNEL_VERSION)\" \
+	-e BR2_LINUX_KERNEL_VERSION=\"$(KERNEL_VERSION)\" \
+	-e BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y \
+	-e BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE=\"/build/kernel.config\"
 
 packages: libstdcxx $(PACKAGES)
 
-libstdcxx $(PACKAGES): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+libstdcxx $(filter-out wireguard,$(PACKAGES)): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+
+wireguard: % : output/$(VERSION)/kernel.config output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+	$(eval TMP_DIR=/tmp/barge-pkg-$*-$(VERSION))
+	vagrant ssh -c ' \
+		sudo tar -zc -f /vagrant/output/$(VERSION)/barge-pkg-$*-$(VERSION).tar.gz -C $(TMP_DIR) \
+			--exclude "./lib/modules/$(KERNEL_VERSION)-barge/kernel" \
+			--exclude "./lib/modules/$(KERNEL_VERSION)-barge/modules.*" .' -- -T
+
+output/$(VERSION)/kernel.config:
+	curl -L https://raw.githubusercontent.com/bargees/barge-os/$(VERSION)/configs/$(@F) -o $@
 
 output/$(VERSION)/barge-pkg-libstdcxx-$(VERSION).tar.gz: | output
 	docker run --rm $(BUILDER):$(VERSION) cat /build/libstdcxx.tar.gz > $@
