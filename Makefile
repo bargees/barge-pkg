@@ -49,7 +49,7 @@ output/$(VERSION)/buildroot.config: | output
 
 PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm kmod libfuse locales make \
 	shadow singularity sshfs su-exec tar tmux tzdata vim \
-	dmidecode findutils socat zlib wireguard
+	dmidecode findutils socat zlib wireguard qemu-ga
 
 EUDEV_OPTIONS       := -e BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
 GIT_OPTIONS         := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
