@@ -1,0 +1,40 @@
+#!/bin/sh
+
+if [ ! -x /usr/bin/qemu-ga ]; then
+  exit
+fi
+
+case "$1" in
+  start)
+    PORT=`/bin/ls /sys/class/virtio-ports`
+    if [ -z "${PORT}" ]; then
+      exit
+    fi
+    NAME=`cat /sys/class/virtio-ports/${PORT}/name`
+    if [ -z "${NAME}" ]; then
+      exit
+    fi
+    if [ ! -L /dev/virtio-ports/${NAME} ]; then
+      mkdir -p /dev/virtio-ports
+      ln -s /dev/${PORT} /dev/virtio-ports/${NAME}
+    fi
+
+    printf "Starting qemu-ga: "
+    start-stop-daemon -S -q -p /var/run/qemu-ga.pid --exec /usr/bin/qemu-ga -- \
+      -d -m virtio-serial -p /dev/virtio-ports/${NAME} -l /var/log/qemu-ga.log
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  stop)
+    printf "Stopping qemu-ga: "
+    start-stop-daemon -K -q -p /var/run/qemu-ga.pid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  restart)
+    "$0" stop
+    sleep 1
+    "$0" start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    ;;
+esac

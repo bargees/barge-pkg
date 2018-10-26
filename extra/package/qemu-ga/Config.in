@@ -1,0 +1,11 @@
+config BR2_PACKAGE_QEMU_GA
+	bool "qemu-ga"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  QEMU Guest Agent is a daemon program running inside the domain which is supposed to help management applications with executing functions which need assistance of the guest OS. 
+
+	  https://wiki.qemu.org/Features/GuestAgent
+
+comment "qemu-ga needs a glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
