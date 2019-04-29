@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-BINDFS_VERSION = 1.13.11
+BINDFS_VERSION = 1.14.0
 BINDFS_SOURCE = bindfs-$(BINDFS_VERSION).tar.gz
-BINDFS_SITE = http://bindfs.org/downloads
+BINDFS_SITE = https://bindfs.org/downloads
 BINDFS_DEPENDENCIES = host-pkgconf libfuse
 BINDFS_LICENSE = GPLv2
 BINDFS_LICENSE_FILES = COPYING
