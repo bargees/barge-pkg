@@ -5,4 +5,4 @@ config BR2_PACKAGE_SHADOW
 	  converting UNIX password files to the shadow password format, plus
 	  programs for managing user and group accounts.
 
-	  http://pkg-shadow.alioth.debian.org/
+	  https://github.com/shadow-maint/shadow

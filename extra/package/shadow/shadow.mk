@@ -4,35 +4,16 @@
 #
 ################################################################################
 
-SHADOW_VERSION = 4.2.1
+SHADOW_VERSION = 4.6
 SHADOW_SOURCE = shadow-$(SHADOW_VERSION).tar.xz
-SHADOW_SITE = http://pkg-shadow.alioth.debian.org/releases
+SHADOW_SITE = https://github.com/shadow-maint/shadow/releases/download/$(SHADOW_VERSION)
 SHADOW_LICENSE = BSD-3c
 SHADOW_LICENSE_FILES = COPYING
-SHADOW_DEPENDENCIES = acl attr #busybox, because barge has busybox.
+SHADOW_DEPENDENCIES = acl attr
 
 SHADOW_INSTALL_STAGING = NO
 
-# --enable-subordinate-ids=no is to disable a test program build
-# The setting of ENABLE_SUBIDS in configure/config.h re-enables this option.
-SHADOW_CONF_OPTS = --disable-nls --enable-subordinate-ids=no
-
-define SHADOW_POST_PATCH_DISABLE_SUID
-	# Disable setting suid bit when installing
-	$(SED) 's/\(^suidu*bins = \).*/\1/' $(@D)/src/Makefile.in
-endef
-SHADOW_POST_PATCH_HOOKS += SHADOW_POST_PATCH_DISABLE_SUID
-
-define SHADOW_PRE_CONFIGURE_ENABLE_SUBIDS
-	$(SED) "s/\(ENABLE_SUBIDS_TRUE\)='#'$$/\1=/" $(@D)/configure
-	$(SED) "s/\(ENABLE_SUBIDS_FALSE\)=$$/\1='#'/" $(@D)/configure
-endef
-SHADOW_PRE_CONFIGURE_HOOKS += SHADOW_PRE_CONFIGURE_ENABLE_SUBIDS
-
-define SHADOW_POST_CONFIGURE_ENABLE_SUBIDS
-	echo "#define ENABLE_SUBIDS 1" >> $(@D)/config.h
-endef
-SHADOW_POST_CONFIGURE_HOOKS += SHADOW_POST_CONFIGURE_ENABLE_SUBIDS
+SHADOW_CONF_OPTS = --sysconfdir=/etc --with-group-name-max-length=32 --disable-nls
 
 # Shadow configuration to support audit
 ifeq ($(BR2_PACKAGE_AUDIT),y)

@@ -183,7 +183,7 @@ ja_JP.utf8
 
 ### shadow*
 
-http://pkg-shadow.alioth.debian.org/
+https://github.com/shadow-maint/shadow
 
 ```bash
 [bargee@barge ~]$ sudo pkg install shadow
