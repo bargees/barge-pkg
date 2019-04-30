@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-QEMU_GA_VERSION = 2.12.1
+QEMU_GA_VERSION = 3.1.0
 QEMU_GA_SOURCE = qemu-$(QEMU_GA_VERSION).tar.xz
-QEMU_GA_SITE = http://download.qemu.org
+QEMU_GA_SITE = https://download.qemu.org
 QEMU_GA_LICENSE = GPL-2.0, LGPL-2.1, MIT, BSD-3-Clause, BSD-2-Clause, Others/BSD-1c
 QEMU_GA_LICENSE_FILES = COPYING COPYING.LIB
 # NOTE: there is no top-level license file for non-(L)GPL licenses;
@@ -58,7 +58,6 @@ define QEMU_GA_CONFIGURE_CMDS
 			--disable-libiscsi \
 			--disable-usb-redir \
 			--disable-strip \
-			--disable-seccomp \
 			--disable-sparse \
 			--disable-mpath \
 			--disable-sanitizers \
@@ -70,6 +69,7 @@ define QEMU_GA_CONFIGURE_CMDS
 			--disable-libxml2 \
 			--disable-capstone \
 			--disable-git-update \
+			--disable-opengl \
 			$(QEMU_GA_OPTS) \
 	)
 endef
