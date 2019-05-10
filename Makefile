@@ -1,5 +1,5 @@
 BUILDER := ailispaw/barge-pkg
-VERSION := 2.12.1
+VERSION := 2.12.2
 
 KERNEL_VERSION := 4.14.118
 
