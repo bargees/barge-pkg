@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CRIU_VERSION = v3.12
+CRIU_VERSION = v3.13
 CRIU_SITE = $(call github,checkpoint-restore,criu,$(CRIU_VERSION))
 CRIU_DEPENDENCIES = libcap protobuf-c libnl libnet iproute2 tar libbsd
 CRIU_LICENSE = GPLv2 (programs), LGPLv2.1 (libraries)
@@ -21,10 +21,10 @@ endif
 ifeq ($(BR2_arm),y)
 ifeq ($(BR2_ARM_CPU_ARMV6),y)
 CRIU_CFLAGS += -march=armv6
-CRIU_HOSTCFLAGS = -DCONFIG_ARMV6 -DNO_RELOCS
+CRIU_HOSTCFLAGS = -DCONFIG_ARMV6 -DNO_RELOCS -DCONFIG_VDSO_32
 else ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_ARM_CPU_ARMV8A),y)
 CRIU_CFLAGS += -march=armv7-a
-CRIU_HOSTCFLAGS = -DCONFIG_ARMV7 -DNO_RELOCS
+CRIU_HOSTCFLAGS = -DCONFIG_ARMV7 -DNO_RELOCS -DCONFIG_VDSO_32
 endif
 endif
 
