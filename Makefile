@@ -1,7 +1,7 @@
 BUILDER := ailispaw/barge-pkg
 VERSION := 2.13.0
 
-KERNEL_VERSION := 4.14.125
+KERNEL_VERSION := 4.14.269
 
 SOURCES := .dockerignore empty.config build.sh \
 	$(shell find patches -type f)
