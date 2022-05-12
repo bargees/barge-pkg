@@ -98,7 +98,7 @@ output/$(VERSION)/buildroot.config: | output
 
 PACKAGES := acl bindfs criu eudev git iproute2 ipvsadm kmod libfuse locales make \
 	shadow sshfs su-exec tar tmux tzdata vim \
-	dmidecode findutils socat zlib wireguard qemu-ga
+	dmidecode findutils socat zlib wireguard-linux-compat wireguard-tools qemu-ga
 
 EUDEV_OPTIONS       := -e BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
 GIT_OPTIONS         := -e BR2_PACKAGE_OPENSSL=y -e BR2_PACKAGE_LIBCURL=y
@@ -106,7 +106,7 @@ IPVSADM_OPTIONS     := -e BR2_PACKAGE_LIBNL=y
 KMOD_OPTIONS        := -e BR2_PACKAGE_KMOD_TOOLS=y
 TMUX_OPTIONS        := -e BR2_PACKAGE_NCURSES_WCHAR=y
 TZDATA_OPTIONS      := -e BR2_TARGET_TZ_ZONELIST=default -e BR2_TARGET_LOCALTIME="Etc/UTC"
-WIREGUARD_OPTIONS   := -v /vagrant/output/$(VERSION)/kernel.config:/build/kernel.config \
+WIREGUARD_LINUX_COMPAT_OPTIONS := -v /vagrant/output/$(VERSION)/kernel.config:/build/kernel.config \
 	-e BR2_LINUX_KERNEL=y \
 	-e BR2_LINUX_KERNEL_CUSTOM_VERSION=y \
 	-e BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\"$(KERNEL_VERSION)\" \
@@ -116,9 +116,9 @@ WIREGUARD_OPTIONS   := -v /vagrant/output/$(VERSION)/kernel.config:/build/kernel
 
 packages: libstdcxx $(PACKAGES)
 
-libstdcxx $(filter-out wireguard,$(PACKAGES)): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+libstdcxx $(filter-out wireguard-linux-compat,$(PACKAGES)): % : output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
 
-wireguard: % : output/$(VERSION)/kernel.config output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
+wireguard-linux-compat: % : output/$(VERSION)/kernel.config output/$(VERSION)/barge-pkg-%-$(VERSION).tar.gz
 	$(eval TMP_DIR=/tmp/barge-pkg-$*-$(VERSION))
 	vagrant ssh -c ' \
 		sudo tar -zc -f /vagrant/output/$(VERSION)/barge-pkg-$*-$(VERSION).tar.gz -C $(TMP_DIR) \
