@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SHADOW_VERSION = 4.6
+SHADOW_VERSION = 4.11.1
 SHADOW_SOURCE = shadow-$(SHADOW_VERSION).tar.xz
-SHADOW_SITE = https://github.com/shadow-maint/shadow/releases/download/$(SHADOW_VERSION)
+SHADOW_SITE = https://github.com/shadow-maint/shadow/releases/download/v$(SHADOW_VERSION)
 SHADOW_LICENSE = BSD-3c
 SHADOW_LICENSE_FILES = COPYING
 SHADOW_DEPENDENCIES = acl attr
