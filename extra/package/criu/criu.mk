@@ -4,14 +4,15 @@
 #
 ################################################################################
 
-CRIU_VERSION = v3.13
+CRIU_VERSION = v3.17
 CRIU_SITE = $(call github,checkpoint-restore,criu,$(CRIU_VERSION))
 CRIU_DEPENDENCIES = libcap protobuf-c libnl libnet iproute2 tar libbsd
 CRIU_LICENSE = GPLv2 (programs), LGPLv2.1 (libraries)
 CRIU_LICENSE_FILES = COPYING
 
 CRIU_MAKE_ENV = $(TARGET_MAKE_ENV)
-CRIU_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/usr/include/libnl3
+CRIU_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include -I$(STAGING_DIR)/usr/include/libnl3 \
+	-D_SYS_RSEQ_H
 
 ifeq ($(BR2_x86_64),y)
 CRIU_HOSTCFLAGS = -DCONFIG_X86_64
@@ -29,7 +30,7 @@ endif
 endif
 
 CRIU_MAKE_OPTS = PREFIX=/usr CC="$(TARGET_CC) $(CRIU_CFLAGS) $(TARGET_LDFLAGS)" \
-	HOSTCFLAGS="$(CRIU_HOSTCFLAGS)"
+	HOSTCFLAGS="$(CRIU_HOSTCFLAGS)" LD="$(TARGET_LD)"
 
 define CRIU_BUILD_CMDS
 	$(RM) $(@D)/images/google/protobuf/descriptor.proto
