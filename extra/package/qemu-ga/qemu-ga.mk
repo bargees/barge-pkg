@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEMU_GA_VERSION = 3.1.0
+QEMU_GA_VERSION = 7.0.0
 QEMU_GA_SOURCE = qemu-$(QEMU_GA_VERSION).tar.xz
 QEMU_GA_SITE = https://download.qemu.org
 QEMU_GA_LICENSE = GPL-2.0, LGPL-2.1, MIT, BSD-3-Clause, BSD-2-Clause, Others/BSD-1c
@@ -36,39 +36,40 @@ define QEMU_GA_CONFIGURE_CMDS
 		./configure \
 			--prefix=/usr \
 			--cross-prefix=$(TARGET_CROSS) \
+			--disable-sanitizers \
 			--audio-drv-list= \
+			\
 			--enable-kvm \
 			--enable-attr \
 			--enable-vhost-net \
-			--disable-bsd-user \
-			--disable-xen \
+			\
+			--disable-capstone \
 			--disable-slirp \
-			--disable-vnc \
-			--disable-virtfs \
-			--disable-brlapi \
-			--disable-curses \
-			--disable-curl \
-			--disable-bluez \
-			--disable-vde \
-			--disable-linux-aio \
-			--disable-cap-ng \
-			--disable-docs \
-			--disable-spice \
-			--disable-rbd \
-			--disable-libiscsi \
-			--disable-usb-redir \
 			--disable-strip \
-			--disable-sparse \
-			--disable-mpath \
-			--disable-sanitizers \
+			\
+			--disable-brlapi \
+			--disable-cap-ng \
+			--disable-curl \
+			--disable-curses \
+			--disable-docs \
 			--disable-hvf \
-			--disable-whpx \
+			--disable-libiscsi \
+			--disable-linux-aio \
 			--disable-malloc-trim \
 			--disable-membarrier \
+			--disable-mpath \
+			--disable-rbd \
+			--disable-sparse \
+			--disable-spice \
+			--disable-usb-redir \
+			--disable-vde \
+			--disable-virtfs \
+			--disable-vnc \
+			--disable-whpx \
+			--disable-xen \
+			\
+			--disable-bsd-user \
 			--disable-vhost-crypto \
-			--disable-libxml2 \
-			--disable-capstone \
-			--disable-git-update \
 			--disable-opengl \
 			$(QEMU_GA_OPTS) \
 	)
@@ -79,7 +80,7 @@ define QEMU_GA_BUILD_CMDS
 endef
 
 define QEMU_GA_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/qemu-ga $(TARGET_DIR)/usr/bin/qemu-ga
+	$(INSTALL) -D -m 0755 $(@D)/build/qga/qemu-ga $(TARGET_DIR)/usr/bin/qemu-ga
 	$(INSTALL) -D -m 0755 $(QEMU_GA_PKGDIR)/qemu-ga $(TARGET_DIR)/etc/init.d/qemu-ga
 endef
 
