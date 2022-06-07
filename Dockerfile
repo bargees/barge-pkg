@@ -1,4 +1,4 @@
-FROM ailispaw/ubuntu-essential:18.04-nodoc
+FROM ailispaw/ubuntu-essential:16.04-nodoc
 
 ENV TERM xterm
 
@@ -12,8 +12,8 @@ ENV SRC_DIR=/build \
     BR_ROOT=/build/buildroot
 RUN mkdir -p ${SRC_DIR}
 
-ENV BR_VERSION 2019.05
-RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.bz2 | tar xj && \
+ENV BR_VERSION 2022.05
+RUN wget -qO- https://buildroot.org/downloads/buildroot-${BR_VERSION}.tar.xz | tar xJ && \
     mv buildroot-${BR_VERSION} ${BR_ROOT}
 
 # Apply patches
@@ -22,16 +22,17 @@ RUN for patch in ${SRC_DIR}/patches/*.patch; do \
       patch -p1 -d ${BR_ROOT} < ${patch}; \
     done
 
-# Copy the empty config file
-COPY empty.config ${BR_ROOT}/.config
-
 # Copy extra packages
 COPY extra ${SRC_DIR}/extra
 
+# Copy the empty config file
+COPY empty.config ${BR_ROOT}/.config
+
+# Copy the build script file
+COPY build.sh ${SRC_DIR}/build.sh
+
+VOLUME ${BR_ROOT}/dl ${BR_ROOT}/ccache
+
 WORKDIR ${BR_ROOT}
 
-RUN make BR2_EXTERNAL=${SRC_DIR}/extra oldconfig && \
-    make --quiet && \
-    find output/build -mindepth 2 -not -name '.stamp_*' | xargs rm -rf && \
-    find output/target/ -name 'libstdc++.so*' | tar zcf ${SRC_DIR}/libstdcxx.tar.gz --transform 's?output/target?.?g' -T - && \
-    rm -rf board/* configs/* dl/* output/images/* output/target/* ccache/*
+CMD ["../build.sh"]
